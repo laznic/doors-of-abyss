@@ -4,19 +4,16 @@ import { PostgrestBuilder } from "@supabase/postgrest-js"
 import React, { useContext, createContext, ReactNode, useEffect, useReducer } from "react"
 
 interface ChapterContextType {
-  currentChapterId: number,
   currentChapter: Database['public']['Tables']['chapters']['Row'] | null,
   nextChapter: Database['public']['Tables']['chapters']['Row'] | null
 }
 
 export const ChapterContext = createContext<ChapterContextType>({
-  currentChapterId: 1,
   currentChapter: null,
   nextChapter: null
 })
 
 const initialState = {
-  currentChapterId: 1,
   currentChapter: null,
   nextChapter: null
 }
@@ -27,7 +24,7 @@ export function ChapterContextProvider (props: { children: ReactNode }) {
 
   useEffect(function fetchChapterData() {
       async function fetchData() {
-        const { data: currentChapter } = await fetchChapterFromSupabase(state.currentChapterId)
+        const { data: currentChapter } = await fetchChapterFromSupabase(state.currentChapter?.id ?? 1)
         setState({ currentChapter })
         
         // One of these exists
@@ -38,15 +35,15 @@ export function ChapterContextProvider (props: { children: ReactNode }) {
       }
 
     fetchData()
-  }, [state.currentChapterId])
+  }, [state.currentChapter?.id])
 
-  function setCurrentChapterId (id: number) {
-    setState({ currentChapterId: id })
+  function goToNextChapter () {
+    setState({ currentChapter: state.nextChapter })
   }
 
   const contextValue = {
     ...state,
-    setCurrentChapterId
+    goToNextChapter
   }
 
   return (
