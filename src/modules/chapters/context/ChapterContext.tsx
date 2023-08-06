@@ -10,11 +10,11 @@ import React, {
 } from "react";
 
 interface ChapterContextType {
-  currentChapter:
-    | (Database["public"]["Tables"]["chapters"]["Row"] & {
-        notes?: Database["public"]["Tables"]["notes"]["Row"];
-      })
-    | null;
+  currentChapter: Partial<
+    Database["public"]["Tables"]["chapters"]["Row"] & {
+      notes?: Database["public"]["Tables"]["notes"]["Row"];
+    }
+  > | null;
   nextChapter:
     | (Database["public"]["Tables"]["chapters"]["Row"] & {
         notes?: Database["public"]["Tables"]["notes"]["Row"];
@@ -24,13 +24,13 @@ interface ChapterContextType {
 }
 
 export const ChapterContext = createContext<ChapterContextType>({
-  currentChapter: null,
+  currentChapter: { id: 1 },
   nextChapter: null,
   goToNextChapter: () => null,
 });
 
 const initialState = {
-  currentChapter: null,
+  currentChapter: { id: 1 },
   nextChapter: null,
 };
 
@@ -44,6 +44,7 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
         const { data: currentChapter } = await fetchChapterFromSupabase(
           state.currentChapter?.id ?? 1,
         );
+
         setState({ currentChapter });
 
         // One of these exists
