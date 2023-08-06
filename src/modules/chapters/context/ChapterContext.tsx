@@ -10,8 +10,16 @@ import React, {
 } from "react";
 
 interface ChapterContextType {
-  currentChapter: Database["public"]["Tables"]["chapters"]["Row"] | null;
-  nextChapter: Database["public"]["Tables"]["chapters"]["Row"] | null;
+  currentChapter:
+    | (Database["public"]["Tables"]["chapters"]["Row"] & {
+        notes?: Database["public"]["Tables"]["notes"]["Row"];
+      })
+    | null;
+  nextChapter:
+    | (Database["public"]["Tables"]["chapters"]["Row"] & {
+        notes?: Database["public"]["Tables"]["notes"]["Row"];
+      })
+    | null;
   goToNextChapter?: () => void;
 }
 
@@ -47,7 +55,12 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
           nextChapterId as number,
         );
 
-        setState({ nextChapter });
+        // There is only one action per chapter for now
+        const { data: nextChapterNotes } = await fetchNotesByAction(
+          nextChapter?.actions[0]?.action_type,
+        );
+
+        setState({ nextChapter: { ...nextChapter, notes: nextChapterNotes } });
       }
 
       fetchData();
@@ -96,6 +109,7 @@ function fetchChapterFromSupabase(chapterId: number): ChapterFetchReturnType {
         go_to_chapter_id
       ),
       options!options_chapter_id_fkey(
+        id,
         text,
         go_to_chapter_id
       )
@@ -116,3 +130,16 @@ type ChapterFetchReturnType = PostgrestBuilder<
     options: Database["public"]["Tables"]["options"]["Row"][];
   }
 >;
+
+type ActionType = "DRAW" | "SHOW_PICTURE" | "NOTEBOOK_READ" | "NOTEBOOK_WRITE";
+
+async function fetchNotesByAction(actionType?: ActionType) {
+  if (!actionType || actionType === "DRAW" || actionType === "NOTEBOOK_WRITE")
+    return [];
+
+  if (actionType === "SHOW_PICTURE") {
+    return supabase.rpc("get_random_image");
+  }
+
+  return supabase.from("notes").select("id, text").is("image", null);
+}
