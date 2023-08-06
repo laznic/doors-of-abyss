@@ -5,12 +5,14 @@ import React, { useContext, createContext, ReactNode, useEffect, useReducer } fr
 
 interface ChapterContextType {
   currentChapter: Database['public']['Tables']['chapters']['Row'] | null,
-  nextChapter: Database['public']['Tables']['chapters']['Row'] | null
+  nextChapter: Database['public']['Tables']['chapters']['Row'] | null,
+  goToNextChapter?: () => void
 }
 
 export const ChapterContext = createContext<ChapterContextType>({
   currentChapter: null,
-  nextChapter: null
+  nextChapter: null,
+  goToNextChapter: () => null
 })
 
 const initialState = {
@@ -28,7 +30,7 @@ export function ChapterContextProvider (props: { children: ReactNode }) {
         setState({ currentChapter })
         
         // One of these exists
-        const nextChapterId = currentChapter?.decisions?.[0]?.go_to_chapter_id ?? currentChapter?.next_chapter_id
+        const nextChapterId = currentChapter?.decisions?.[0]?.go_to_chapter_id ?? currentChapter?.next_chapter_id ?? 1
         const { data: nextChapter } = await fetchChapterFromSupabase(nextChapterId as number)
 
         setState({ nextChapter })
@@ -62,6 +64,7 @@ function reducer (state: ChapterContextType, next: Partial<ChapterContextType>) 
 function fetchChapterFromSupabase (chapterId: number): PostgrestBuilder<Database['public']['Tables']['chapters']['Row'] & { decisions: Database['public']['Tables']['decisions']['Row'][] }> {
   return supabase.from('chapters')
     .select(`
+      id,
       text,
       image,
       next_chapter_id,
