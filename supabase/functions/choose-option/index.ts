@@ -32,7 +32,7 @@ serve(async (req) => {
 
   if (optionError) {
     return new Response(JSON.stringify({ error: optionError }), {
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });
   }
@@ -46,7 +46,7 @@ serve(async (req) => {
 
   if (decisionError) {
     return new Response(JSON.stringify({ error: decisionError }), {
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });
   }
@@ -81,7 +81,7 @@ serve(async (req) => {
     .single();
 
   return new Response(JSON.stringify(nextChapter), {
-    headers: { "Content-Type": "application/json" },
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 });
 
