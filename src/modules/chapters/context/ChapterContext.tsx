@@ -20,7 +20,7 @@ interface ChapterContextType {
         notes?: Database["public"]["Tables"]["notes"]["Row"];
       })
     | null;
-  goToNextChapter?: (optionId?: number) => void;
+  goToNextChapter?: (id?: number, isOption?: boolean) => void;
 }
 
 export const ChapterContext = createContext<ChapterContextType>({
