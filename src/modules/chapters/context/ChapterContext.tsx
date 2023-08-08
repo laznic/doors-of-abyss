@@ -49,9 +49,9 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
 
         // One of these exists
         const nextChapterId =
+          currentChapter?.actions?.[0]?.go_to_chapter_id ??
           currentChapter?.decisions?.[0]?.go_to_chapter_id ??
-          currentChapter?.next_chapter_id ??
-          1;
+          currentChapter?.next_chapter_id;
         const { data: nextChapter } = await fetchChapterFromSupabase(
           nextChapterId as number,
         );
@@ -69,8 +69,17 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
     [state.currentChapter?.id],
   );
 
-  function goToNextChapter() {
-    setState({ currentChapter: state.nextChapter });
+  // This should go to the chapter determined in action, option,
+  // or defaulting to state.nextChapter via "continue" button
+  async function goToNextChapter(optionChapterId?: number) {
+    if (!optionChapterId) {
+      return setState({ currentChapter: state.nextChapter });
+    }
+
+    const { data: nextChapter } = await fetchChapterFromSupabase(
+      optionChapterId,
+    );
+    setState({ currentChapter: nextChapter });
   }
 
   const contextValue = {
@@ -134,7 +143,7 @@ type ChapterFetchReturnType = PostgrestBuilder<
 
 type ActionType = "DRAW" | "SHOW_PICTURE" | "NOTEBOOK_READ" | "NOTEBOOK_WRITE";
 
-async function fetchNotesByAction(actionType?: ActionType) {
+function fetchNotesByAction(actionType?: ActionType) {
   if (!actionType || actionType === "DRAW" || actionType === "NOTEBOOK_WRITE")
     return [];
 

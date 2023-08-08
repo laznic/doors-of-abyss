@@ -1,16 +1,12 @@
 import React from "react";
-import { Button } from '@/components/ui/button'
-import { useChapterContext } from "./modules/chapters/context/ChapterContext";
+import Chapter from "./modules/chapters/containers/Chapter";
 
 function App() {
-  const { currentChapter, goToNextChapter } = useChapterContext()
-
   return (
-      <div className="App">
-        {currentChapter?.text}
-        <Button onClick={goToNextChapter}>Next</Button>
-      </div>
-  )
+    <div className="App">
+      <Chapter />
+    </div>
+  );
 }
 
 export default App;
