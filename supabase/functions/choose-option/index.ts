@@ -16,17 +16,32 @@ serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
   }
 
-  const {
-    decision_target_chapter_id,
-    decision_go_to_chapter_id,
-    go_to_chapter_id,
-  } = await req.json();
+  const { optionId } = await req.json();
+
+  const { data: option, error: optionError } = await supabaseClient
+    .from("options")
+    .select(
+      `
+      decision_target_chapter_id,
+      decision_go_to_chapter_id,
+      go_to_chapter_id
+    `,
+    )
+    .eq("id", optionId)
+    .single();
+
+  if (optionError) {
+    return new Response(JSON.stringify({ error: optionError }), {
+      headers: { "Content-Type": "application/json" },
+      status: 500,
+    });
+  }
 
   const { error: decisionError } = await supabaseClient
     .from("decisions")
     .insert({
-      chapter_id: decision_target_chapter_id,
-      go_to_chapter_id: decision_go_to_chapter_id,
+      chapter_id: option.decision_target_chapter_id,
+      go_to_chapter_id: option.decision_go_to_chapter_id,
     });
 
   if (decisionError) {
@@ -60,7 +75,7 @@ serve(async (req) => {
         )
       `,
     )
-    .eq("id", go_to_chapter_id)
+    .eq("id", option.go_to_chapter_id)
     .order("id", { foreignTable: "decisions", ascending: false })
     .limit(1, { foreignTable: "decisions" })
     .single();
