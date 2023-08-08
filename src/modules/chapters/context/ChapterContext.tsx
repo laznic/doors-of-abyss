@@ -20,7 +20,7 @@ interface ChapterContextType {
         notes?: Database["public"]["Tables"]["notes"]["Row"];
       })
     | null;
-  goToNextChapter?: () => void;
+  goToNextChapter?: (optionId?: number) => void;
 }
 
 export const ChapterContext = createContext<ChapterContextType>({
@@ -69,18 +69,23 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
     [state.currentChapter?.id],
   );
 
-  // This should go to the chapter determined in action, option,
-  // or defaulting to state.nextChapter via "continue" button
-  async function goToNextChapter(optionChapterId?: number) {
-    if (!optionChapterId) {
+  async function goToNextChapter(id?: number, isOption?: "action" | "option") {
+    if (!id) {
       return setState({ currentChapter: state.nextChapter });
     }
 
-    // Should probably send a POST request to create a "decision" if selected
-    // option has a decision attached to it
-    const { data: nextChapter } = await fetchChapterFromSupabase(
-      optionChapterId,
+    if (!isOption) {
+      const { data: nextChapter } = await fetchChapterFromSupabase(id);
+
+      setState({ currentChapter: nextChapter });
+      return;
+    }
+
+    const { data: nextChapter } = await supabase.functions.invoke(
+      "choose-option",
+      { body: { optionId: id } },
     );
+
     setState({ currentChapter: nextChapter });
   }
 
