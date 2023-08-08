@@ -4,9 +4,13 @@ import useKeyPress from "../hooks/useKeyPress";
 
 interface ChapterOptionsProps {
   options: Database["public"]["Tables"]["options"]["Row"][];
+  onOptionSelect: (id: number) => void;
 }
 
-export default function ChapterOptions({ options }: ChapterOptionsProps) {
+export default function ChapterOptions({
+  options,
+  onOptionSelect,
+}: ChapterOptionsProps) {
   const [activeOption, setActiveOption] = useState<number>(0);
 
   useKeyPress("ArrowUp", (e) => {
@@ -17,6 +21,11 @@ export default function ChapterOptions({ options }: ChapterOptionsProps) {
   useKeyPress("ArrowDown", (e) => {
     e.preventDefault();
     setActiveOption((prev) => (prev + 1 > options.length - 1 ? 0 : prev + 1));
+  });
+
+  useKeyPress("Enter", (e) => {
+    e.preventDefault();
+    onOptionSelect(options[activeOption].id);
   });
 
   return (
