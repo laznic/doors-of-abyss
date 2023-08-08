@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import Canvas from "@/components/ui/canvas";
 import React, { useRef } from "react";
 import { useChapterContext } from "../context/ChapterContext";
@@ -14,16 +13,12 @@ export default function Chapter() {
   const canvasRef = useRef<HTMLCanvasElement>();
   const hasOptions = options.length > 0;
 
-  useKeyPress("Enter", handleContinue);
-
   function onOptionSelect(id: number) {
     goToNextChapter?.(id, true);
   }
 
   function handleContinue() {
-    if (options.length > 0) {
-      return;
-    }
+    if (options.length > 0) return;
 
     goToNextChapter?.(action?.id);
   }
@@ -50,6 +45,8 @@ export default function Chapter() {
         return null;
     }
   }
+
+  useKeyPress("Enter", handleContinue);
 
   return (
     <section>
