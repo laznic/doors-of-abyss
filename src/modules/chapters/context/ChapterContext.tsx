@@ -76,6 +76,8 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
       return setState({ currentChapter: state.nextChapter });
     }
 
+    // Should probably send a POST request to create a "decision" if selected
+    // option has a decision attached to it
     const { data: nextChapter } = await fetchChapterFromSupabase(
       optionChapterId,
     );
@@ -126,8 +128,7 @@ function fetchChapterFromSupabase(chapterId: number): ChapterFetchReturnType {
     `,
     )
     .eq("id", chapterId)
-    .or("used.eq.false,is_default.eq.true", { foreignTable: "decisions" })
-    .order("is_default", { foreignTable: "decisions", ascending: true })
+    .order("id", { foreignTable: "decisions", ascending: false })
     .returns<Partial<ChapterContextType>>()
     .limit(1, { foreignTable: "decisions" })
     .single();
