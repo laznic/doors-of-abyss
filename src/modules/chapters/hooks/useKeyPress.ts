@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function useKeyPress(
   targetKey: string,
@@ -7,18 +7,24 @@ export default function useKeyPress(
 ) {
   const [keyPressed, setKeyPressed] = useState(false);
 
-  function downHandler(event: KeyboardEvent) {
-    if (event.key === targetKey) {
-      setKeyPressed(true);
-    }
-  }
+  const downHandler = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === targetKey) {
+        setKeyPressed(true);
+      }
+    },
+    [targetKey],
+  );
 
-  const upHandler = (event: KeyboardEvent) => {
-    if (event.key === targetKey) {
-      setKeyPressed(false);
-      onPress?.(event);
-    }
-  };
+  const upHandler = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === targetKey) {
+        setKeyPressed(false);
+        onPress?.(event);
+      }
+    },
+    [targetKey, onPress],
+  );
 
   useEffect(() => {
     target?.addEventListener("keydown", downHandler);
@@ -28,8 +34,7 @@ export default function useKeyPress(
       target?.removeEventListener("keydown", downHandler);
       target?.removeEventListener("keyup", upHandler);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [downHandler, upHandler, target]);
 
   return keyPressed;
 }
