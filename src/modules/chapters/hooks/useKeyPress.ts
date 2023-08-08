@@ -21,12 +21,12 @@ export default function useKeyPress(
   };
 
   useEffect(() => {
-    target.addEventListener("keydown", downHandler);
-    target.addEventListener("keyup", upHandler);
+    target?.addEventListener("keydown", downHandler);
+    target?.addEventListener("keyup", upHandler);
 
     return () => {
-      target.removeEventListener("keydown", downHandler);
-      target.removeEventListener("keyup", upHandler);
+      target?.removeEventListener("keydown", downHandler);
+      target?.removeEventListener("keyup", upHandler);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
