@@ -3,6 +3,7 @@ import Canvas from "@/components/ui/canvas";
 import React, { useRef, useState } from "react";
 import { useChapterContext } from "../context/ChapterContext";
 import DOMPurify from "dompurify";
+import ChapterOptions from "../components/ChapterOptions";
 
 export default function Chapter() {
   const { currentChapter, goToNextChapter } = useChapterContext();
@@ -11,6 +12,7 @@ export default function Chapter() {
   const notes = currentChapter?.notes || [];
   const canvasRef = useRef<HTMLCanvasElement>();
   const [selectedOption] = useState<number>();
+  const hasOptions = options.length > 0;
 
   function handleContinue() {
     if (!action && options.length === 0) {
@@ -63,6 +65,8 @@ export default function Chapter() {
       </header>
 
       <p>{currentChapter?.text}</p>
+
+      {hasOptions && <ChapterOptions options={options} />}
 
       <Button onClick={handleContinue}>Continue</Button>
     </section>
