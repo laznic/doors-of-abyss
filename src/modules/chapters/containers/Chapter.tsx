@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import Canvas from "@/components/ui/canvas";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useChapterContext } from "../context/ChapterContext";
 import DOMPurify from "dompurify";
 import ChapterOptions from "../components/ChapterOptions";
+import useKeyPress from "../hooks/useKeyPress";
 
 export default function Chapter() {
   const { currentChapter, goToNextChapter } = useChapterContext();
@@ -11,21 +12,20 @@ export default function Chapter() {
   const options = currentChapter?.options || [];
   const notes = currentChapter?.notes || [];
   const canvasRef = useRef<HTMLCanvasElement>();
-  const [selectedOption] = useState<number>();
   const hasOptions = options.length > 0;
 
+  useKeyPress("Enter", handleContinue);
+
+  function onOptionSelect(id: number) {
+    goToNextChapter?.(id, true);
+  }
+
   function handleContinue() {
-    if (!action && options.length === 0) {
-      goToNextChapter?.();
+    if (options.length > 0) {
       return;
     }
 
-    if (action) {
-      goToNextChapter?.(action?.id);
-      return;
-    }
-
-    goToNextChapter?.(selectedOption, true);
+    goToNextChapter?.(action?.id);
   }
 
   function renderActions() {
@@ -66,9 +66,9 @@ export default function Chapter() {
 
       <p>{currentChapter?.text}</p>
 
-      {hasOptions && <ChapterOptions options={options} />}
-
-      <Button onClick={handleContinue}>Continue</Button>
+      {hasOptions && (
+        <ChapterOptions options={options} onOptionSelect={onOptionSelect} />
+      )}
     </section>
   );
 }
