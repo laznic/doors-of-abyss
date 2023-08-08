@@ -1,13 +1,30 @@
 import { Button } from "@/components/ui/button";
 import Canvas from "@/components/ui/canvas";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useChapterContext } from "../context/ChapterContext";
 import DOMPurify from "dompurify";
 
 export default function Chapter() {
   const { currentChapter, goToNextChapter } = useChapterContext();
   const [action] = currentChapter?.actions || [];
+  const options = currentChapter?.options || [];
+  const notes = currentChapter?.notes || [];
   const canvasRef = useRef<HTMLCanvasElement>();
+  const [selectedOption] = useState<number>();
+
+  function handleContinue() {
+    if (!action && options.length === 0) {
+      goToNextChapter?.();
+      return;
+    }
+
+    if (action) {
+      goToNextChapter?.(action?.id);
+      return;
+    }
+
+    goToNextChapter?.(selectedOption, true);
+  }
 
   function renderActions() {
     switch (action?.action_type) {
@@ -16,14 +33,14 @@ export default function Chapter() {
       case "SHOW_PICTURE":
         return (
           <img
-            src={DOMPurify.sanitize(currentChapter?.notes.image)}
+            src={DOMPurify.sanitize(notes?.[0]?.image)}
             alt="Chapter image"
           />
         );
       case "NOTEBOOK_READ":
         return (
-          Array.isArray(currentChapter?.notes) &&
-          currentChapter?.notes.map((note) => <p key={note.id}>{note.text}</p>)
+          Array.isArray(notes) &&
+          notes.map((note) => <p key={note.id}>{note.text}</p>)
         );
       case "NOTEBOOK_WRITE":
         return <input type="text" />;
@@ -47,7 +64,7 @@ export default function Chapter() {
 
       <p>{currentChapter?.text}</p>
 
-      <Button onClick={goToNextChapter}>Continue</Button>
+      <Button onClick={handleContinue}>Continue</Button>
     </section>
   );
 }
