@@ -12,12 +12,18 @@ import React, {
 interface ChapterContextType {
   currentChapter: Partial<
     Database["public"]["Tables"]["chapters"]["Row"] & {
-      notes?: Database["public"]["Tables"]["notes"]["Row"];
+      notes?: Database["public"]["Tables"]["notes"]["Row"][];
+      actions?: Database["public"]["Tables"]["actions"]["Row"][];
+      decisions?: Database["public"]["Tables"]["decisions"]["Row"][];
+      options?: Database["public"]["Tables"]["options"]["Row"][];
     }
   > | null;
   nextChapter:
     | (Database["public"]["Tables"]["chapters"]["Row"] & {
-        notes?: Database["public"]["Tables"]["notes"]["Row"];
+        notes?: Database["public"]["Tables"]["notes"]["Row"][];
+        actions?: Database["public"]["Tables"]["actions"]["Row"][];
+        decisions?: Database["public"]["Tables"]["decisions"]["Row"][];
+        options?: Database["public"]["Tables"]["options"]["Row"][];
       })
     | null;
   goToNextChapter?: (id?: number, isOption?: boolean) => void;
