@@ -27,17 +27,20 @@ export interface ChapterContextType {
       })
     | null;
   goToNextChapter?: (id?: number, isOption?: boolean) => void;
+  shouldKeepNotes: boolean;
 }
 
 export const ChapterContext = createContext<ChapterContextType>({
-  currentChapter: { id: 1 },
+  currentChapter: { id: 1, notes: [] },
   nextChapter: null,
   goToNextChapter: () => null,
+  shouldKeepNotes: false,
 });
 
 const initialState = {
-  currentChapter: { id: 1 },
+  currentChapter: { id: 1, notes: [] },
   nextChapter: null,
+  shouldKeepNotes: false,
 };
 
 export function ChapterContextProvider(props: { children: ReactNode }) {
@@ -51,7 +54,11 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
           state.currentChapter?.id ?? 1,
         );
 
-        setState({ currentChapter });
+        const newCurrentChapter = state.shouldKeepNotes
+          ? { ...currentChapter, notes: state.currentChapter?.notes }
+          : currentChapter;
+
+        setState({ currentChapter: newCurrentChapter });
 
         // One of these exists
         const nextChapterId =
@@ -72,12 +79,19 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
 
       fetchData();
     },
-    [state.currentChapter?.id],
+    [
+      state.currentChapter?.id,
+      state.currentChapter?.notes,
+      state.shouldKeepNotes,
+    ],
   );
 
   async function goToNextChapter(id?: number, isOption?: "action" | "option") {
     if (!id) {
-      return setState({ currentChapter: state.nextChapter });
+      const shouldKeepNotes =
+        Array.isArray(state.nextChapter.notes) &&
+        state.nextChapter.notes.length > 0;
+      return setState({ currentChapter: state.nextChapter, shouldKeepNotes });
     }
 
     if (!isOption) {
