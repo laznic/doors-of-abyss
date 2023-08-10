@@ -7,7 +7,7 @@ export default function Chapters() {
   const { currentChapter } = useChapterContext();
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode={"wait"}>
       <Chapter key={currentChapter?.id} chapter={currentChapter} />;
     </AnimatePresence>
   );

@@ -7,7 +7,7 @@ import {
 import DOMPurify from "dompurify";
 import ChapterOptions from "../components/ChapterOptions";
 import useKeyPress from "../hooks/useKeyPress";
-import { motion } from "framer-motion";
+import { animate, motion, usePresence } from "framer-motion";
 import ChapterText from "../components/ChapterText";
 
 interface ChapterProps {
@@ -21,7 +21,8 @@ export default function Chapter({ chapter }: ChapterProps) {
   const notes = chapter?.notes || [];
   const canvasRef = useRef<HTMLCanvasElement>();
   const hasOptions = options.length > 0;
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [ellipsisAnimation, setEllipsisAnimation] = useState();
+  const [isPresent, safeToRemove] = usePresence();
 
   function onOptionSelect(id: number) {
     goToNextChapter?.(id, true);
@@ -56,14 +57,30 @@ export default function Chapter({ chapter }: ChapterProps) {
 
   useKeyPress("Enter", handleContinue);
 
+  function startAnimatingEllipse() {
+    const animation = animate(
+      "ellipse",
+      { rx: [380, 390], ry: [290, 275], rotate: [-1, 1] },
+      {
+        duration: 3,
+        repeat: Infinity,
+        repeatType: "reverse",
+        ease: "easeInOut",
+      },
+    );
+
+    setEllipsisAnimation(animation);
+  }
+
+  useEffect(() => {
+    if (!isPresent) {
+      ellipsisAnimation.stop();
+      safeToRemove();
+    }
+  }, [isPresent, ellipsisAnimation, safeToRemove]);
+
   return (
-    <section
-      layout
-      className="mx-auto absolute top-[50%] -translate-y-1/2 max-w-2xl left-0 right-0"
-      initial={{ opacity: 0, y: "0%" }}
-      animate={{ opacity: 1, y: "-50%" }}
-      exit={{ opacity: 0, y: "-60%" }}
-    >
+    <section className="mx-auto absolute top-[50%] -translate-y-1/2 max-w-2xl left-0 right-0">
       <header>
         <svg
           width="800"
@@ -94,19 +111,17 @@ export default function Chapter({ chapter }: ChapterProps) {
                 cy="300"
                 fill="white"
                 style={{ filter: "url(#displacementFilter)" }}
-                initial={{ rx: 380, ry: 290, rotate: -1 }}
-                animate={{ rx: 390, ry: 275, rotate: 1 }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                }}
+                initial={{ rx: 0, ry: 0, rotate: 1 }}
+                animate={{ rx: 380, ry: 290, rotate: -1 }}
+                exit={{ rx: 0, ry: 0, rotate: 1 }}
+                transition={{ duration: 0.75, ease: "easeInOut" }}
+                onAnimationComplete={startAnimatingEllipse}
               />
             </mask>
           </defs>
           <image
-            xlinkHref={DOMPurify.sanitize(chapter?.image)}
+            // xlinkHref={DOMPurify.sanitize(chapter?.image)}
+            xlinkHref={"https://picsum.photos/800/600"}
             width="800"
             height="600"
             mask="url(#circleMask)"
@@ -123,10 +138,4 @@ export default function Chapter({ chapter }: ChapterProps) {
       )}
     </section>
   );
-}
-
-function getRandomInt(min: number, max: number) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
