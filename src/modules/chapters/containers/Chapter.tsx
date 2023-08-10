@@ -7,7 +7,7 @@ import {
 import DOMPurify from "dompurify";
 import ChapterOptions from "../components/ChapterOptions";
 import useKeyPress from "../hooks/useKeyPress";
-import { animate, motion, usePresence } from "framer-motion";
+import { animate, AnimatePresence, motion, usePresence } from "framer-motion";
 import ChapterText from "../components/ChapterText";
 
 interface ChapterProps {
@@ -74,7 +74,7 @@ export default function Chapter({ chapter }: ChapterProps) {
 
   useEffect(() => {
     if (!isPresent) {
-      ellipsisAnimation.stop();
+      ellipsisAnimation?.stop();
       safeToRemove();
     }
   }, [isPresent, ellipsisAnimation, safeToRemove]);
@@ -131,7 +131,7 @@ export default function Chapter({ chapter }: ChapterProps) {
         {renderActions()}
       </header>
 
-      <ChapterText text={chapter?.text} />
+      <ChapterText key={chapter?.id} text={chapter?.text} />
 
       {hasOptions && (
         <ChapterOptions options={options} onOptionSelect={onOptionSelect} />

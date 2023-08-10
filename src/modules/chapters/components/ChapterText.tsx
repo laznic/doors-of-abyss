@@ -1,29 +1,66 @@
-import { useAnimate, stagger } from "framer-motion";
+import { useAnimate, stagger, usePresence } from "framer-motion";
 import React, { useEffect } from "react";
 import Splitting from "splitting";
 
 export default function ChapterText({ text }: { text: string }) {
   const [scope, animate] = useAnimate();
+  const [isPresent, safeToRemove] = usePresence();
 
   useEffect(() => {
     if (text && scope.current) {
       const [output] = Splitting({ target: scope.current, by: "words" });
-      output.words.forEach((word) => {
-        animate(
-          word,
-          {
-            opacity: [0, 1],
-            scale: [2, 1],
-          },
-          {
-            delay: stagger(WORDS_PER_MINUTE / output.words.length / 75, {
-              from: getRandomInt(0, output.words.length - 1),
-            }),
-          },
-        );
-      });
+
+      if (isPresent) {
+        const enterAnimation = async () => {
+          for (const word of output.words) {
+            animate(
+              word,
+              {
+                opacity: [0, 1],
+                scale: [0, 1],
+              },
+              {
+                duration: 0.2,
+                delay: stagger(WORDS_PER_MINUTE / output.words.length / 75, {
+                  from: getRandomInt(0, output.words.length - 1),
+                }),
+              },
+            );
+          }
+        };
+        enterAnimation();
+      } else {
+        const exitAnimation = async () => {
+          const staggerAmount = WORDS_PER_MINUTE / output.words.length / 75;
+
+          for (const word of output.words) {
+            animate(
+              word,
+              {
+                opacity: [1, 0],
+                scale: [1, 1.5],
+              },
+              {
+                delay: stagger(staggerAmount, {
+                  from: getRandomInt(0, output.words.length - 1),
+                }),
+              },
+            );
+          }
+
+          animate(
+            scope.current,
+            { opacity: 0 },
+            { delay: staggerAmount * output.words.length - 0.1 },
+          );
+
+          safeToRemove();
+        };
+
+        exitAnimation();
+      }
     }
-  }, [scope, text, animate]);
+  }, [isPresent, safeToRemove, animate, scope, text]);
 
   return <p ref={scope}>{text}</p>;
 }
