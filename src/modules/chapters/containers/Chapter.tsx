@@ -1,5 +1,5 @@
 import Canvas from "@/components/ui/canvas";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ChapterContextType,
   useChapterContext,
@@ -64,19 +64,53 @@ export default function Chapter({ chapter }: ChapterProps) {
       exit={{ opacity: 0, y: "-60%" }}
     >
       <header>
-        {chapter?.image && (
-          <div className="w-full bg-neutral-800 h-96" />
-          // <motion.img
-          //   layout
-          //   key={`${chapter?.id}-image`}
-          //   initial={{ opacity: 0, scale: 0.9 }}
-          //   animate={imageLoaded ? { opacity: 1, scale: 1 } : false}
-          //   exit={{ opacity: 0, scale: 0.9 }}
-          //   src={DOMPurify.sanitize(chapter?.image)}
-          //   alt="Chapter image"
-          //   onLoad={() => setImageLoaded(true)}
-          // />
-        )}
+        <svg
+          width="800"
+          height="600"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
+        >
+          <defs>
+            <filter id="displacementFilter">
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.025"
+                numOctaves="6"
+                result="noise"
+              />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="noise"
+                scale="100"
+                xChannelSelector="R"
+                yChannelSelector="G"
+              />
+            </filter>
+            <mask id="circleMask">
+              <motion.ellipse
+                cx="400"
+                cy="300"
+                fill="white"
+                style={{ filter: "url(#displacementFilter)" }}
+                initial={{ rx: 380, ry: 290, rotate: -1 }}
+                animate={{ rx: 390, ry: 275, rotate: 1 }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                }}
+              />
+            </mask>
+          </defs>
+          <image
+            xlinkHref={DOMPurify.sanitize(chapter?.image)}
+            width="800"
+            height="600"
+            mask="url(#circleMask)"
+          />
+        </svg>
 
         {renderActions()}
       </header>
@@ -88,4 +122,10 @@ export default function Chapter({ chapter }: ChapterProps) {
       )}
     </motion.section>
   );
+}
+
+function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
