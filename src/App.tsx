@@ -1,10 +1,10 @@
 import React from "react";
-import Chapter from "./modules/chapters/containers/Chapter";
+import Chapters from "./modules/chapters/containers/Chapters";
 
 function App() {
   return (
     <div className="App">
-      <Chapter />
+      <Chapters />
     </div>
   );
 }

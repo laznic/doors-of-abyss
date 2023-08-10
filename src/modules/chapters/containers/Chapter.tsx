@@ -1,15 +1,23 @@
 import Canvas from "@/components/ui/canvas";
 import React, { useRef } from "react";
-import { useChapterContext } from "../context/ChapterContext";
+import {
+  ChapterContextType,
+  useChapterContext,
+} from "../context/ChapterContext";
 import DOMPurify from "dompurify";
 import ChapterOptions from "../components/ChapterOptions";
 import useKeyPress from "../hooks/useKeyPress";
+import { AnimatePresence, motion } from "framer-motion";
 
-export default function Chapter() {
-  const { currentChapter, goToNextChapter } = useChapterContext();
-  const [action] = currentChapter?.actions || [];
-  const options = currentChapter?.options || [];
-  const notes = currentChapter?.notes || [];
+interface ChapterProps {
+  chapter: ChapterContextType["currentChapter"];
+}
+
+export default function Chapter({ chapter }: ChapterProps) {
+  const { goToNextChapter } = useChapterContext();
+  const [action] = chapter?.actions || [];
+  const options = chapter?.options || [];
+  const notes = chapter?.notes || [];
   const canvasRef = useRef<HTMLCanvasElement>();
   const hasOptions = options.length > 0;
 
@@ -49,23 +57,26 @@ export default function Chapter() {
   useKeyPress("Enter", handleContinue);
 
   return (
-    <section>
-      <header>
-        {currentChapter?.image && (
-          <img
-            src={DOMPurify.sanitize(currentChapter?.image)}
-            alt="Chapter image"
-          />
+    <AnimatePresence>
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <header>
+          {chapter?.image && (
+            <img src={DOMPurify.sanitize(chapter?.image)} alt="Chapter image" />
+          )}
+
+          {renderActions()}
+        </header>
+
+        <p>{chapter?.text}</p>
+
+        {hasOptions && (
+          <ChapterOptions options={options} onOptionSelect={onOptionSelect} />
         )}
-
-        {renderActions()}
-      </header>
-
-      <p>{currentChapter?.text}</p>
-
-      {hasOptions && (
-        <ChapterOptions options={options} onOptionSelect={onOptionSelect} />
-      )}
-    </section>
+      </motion.section>
+    </AnimatePresence>
   );
 }

@@ -9,7 +9,7 @@ import React, {
   useReducer,
 } from "react";
 
-interface ChapterContextType {
+export interface ChapterContextType {
   currentChapter: Partial<
     Database["public"]["Tables"]["chapters"]["Row"] & {
       notes?: Database["public"]["Tables"]["notes"]["Row"][];
