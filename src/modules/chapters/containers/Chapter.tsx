@@ -8,6 +8,7 @@ import DOMPurify from "dompurify";
 import ChapterOptions from "../components/ChapterOptions";
 import useKeyPress from "../hooks/useKeyPress";
 import { motion } from "framer-motion";
+import ChapterText from "../components/ChapterText";
 
 interface ChapterProps {
   chapter: ChapterContextType["currentChapter"];
@@ -56,7 +57,7 @@ export default function Chapter({ chapter }: ChapterProps) {
   useKeyPress("Enter", handleContinue);
 
   return (
-    <motion.section
+    <section
       layout
       className="mx-auto absolute top-[50%] -translate-y-1/2 max-w-2xl left-0 right-0"
       initial={{ opacity: 0, y: "0%" }}
@@ -115,12 +116,12 @@ export default function Chapter({ chapter }: ChapterProps) {
         {renderActions()}
       </header>
 
-      <p>{chapter?.text}</p>
+      <ChapterText text={chapter?.text} />
 
       {hasOptions && (
         <ChapterOptions options={options} onOptionSelect={onOptionSelect} />
       )}
-    </motion.section>
+    </section>
   );
 }
 

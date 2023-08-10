@@ -19,6 +19,7 @@
     "lucide-react": "0.263.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "splitting": "1.0.6",
     "tailwind-merge": "1.14.0",
     "tailwindcss-animate": "1.0.6"
   },
@@ -29,6 +30,7 @@
     "@types/node": "20.4.8",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
+    "@types/splitting": "1.0.1",
     "@typescript-eslint/eslint-plugin": "5.46.0",
     "@typescript-eslint/parser": "5.46.0",
     "@vitejs/plugin-react-swc": "3.0.0",
