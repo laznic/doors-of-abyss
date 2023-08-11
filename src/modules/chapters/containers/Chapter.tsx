@@ -119,7 +119,15 @@ export default function Chapter({ chapter }: ChapterProps) {
               />
             </mask>
           </defs>
-          <image
+          <motion.image
+            initial={{ width: 800 }}
+            animate={{ width: 810 }}
+            transition={{
+              duration: 3,
+              ease: "easeInOut",
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
             // xlinkHref={DOMPurify.sanitize(chapter?.image)}
             xlinkHref={"https://picsum.photos/800/600"}
             width="800"
