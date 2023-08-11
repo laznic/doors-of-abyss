@@ -54,8 +54,8 @@ export default forwardRef(function Canvas(props, canvasRef) {
     const y = clientY - top;
 
     context.lineTo(x, y);
-    context.strokeStyle = "black";
-    context.lineWidth = 11.25;
+    context.strokeStyle = "#191f2f";
+    context.lineWidth = 7.25;
     context.lineCap = "round";
     context.stroke();
     context.closePath();
@@ -70,8 +70,8 @@ export default forwardRef(function Canvas(props, canvasRef) {
   return (
     <canvas
       ref={canvasRef}
-      width={window.innerWidth}
-      height={window.innerHeight}
+      width={720}
+      height={400}
       onMouseDown={startDrawing}
       onMouseMove={drawLine}
       onMouseUp={stopDrawing}

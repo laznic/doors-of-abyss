@@ -7,8 +7,9 @@ import {
 import DOMPurify from "dompurify";
 import ChapterOptions from "../components/ChapterOptions";
 import useKeyPress from "../hooks/useKeyPress";
-import { animate, AnimatePresence, motion, usePresence } from "framer-motion";
+import { animate, motion, usePresence } from "framer-motion";
 import ChapterText from "../components/ChapterText";
+import supabase from "@/lib/supabase";
 
 interface ChapterProps {
   chapter: ChapterContextType["currentChapter"];
@@ -28,8 +29,35 @@ export default function Chapter({ chapter }: ChapterProps) {
     goToNextChapter?.(id, true);
   }
 
-  function handleContinue() {
+  async function handleContinue() {
     if (options.length > 0) return;
+
+    if (action?.action_type === "DRAW") {
+      canvasRef.current?.toBlob(async function (blob) {
+        const { data: uploadedImage, error: uploadError } =
+          await supabase.storage
+            .from("chapters")
+            .upload(`${Date.now()}.png`, blob, {
+              contentType: "image/png",
+            });
+
+        if (uploadError) return console.error(uploadError);
+
+        const path = `${
+          import.meta.env.VITE_SUPABASE_URL
+        }/storage/v1/object/public/chapters/${uploadedImage?.path}`;
+
+        const { error: noteError } = await supabase.from("notes").insert({
+          image: path,
+        });
+
+        if (noteError) return console.error(noteError);
+
+        goToNextChapter?.(action?.id);
+      });
+
+      return;
+    }
 
     goToNextChapter?.(action?.id);
   }
@@ -37,11 +65,32 @@ export default function Chapter({ chapter }: ChapterProps) {
   function renderActions() {
     switch (action?.action_type) {
       case "DRAW":
-        return <Canvas ref={canvasRef} />;
+        return (
+          <>
+            <Canvas ref={canvasRef} />
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 15 15"
+              fill="none"
+              className="mx-auto text-muted mt-8"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.14645 2.14645C7.34171 1.95118 7.65829 1.95118 7.85355 2.14645L11.8536 6.14645C12.0488 6.34171 12.0488 6.65829 11.8536 6.85355C11.6583 7.04882 11.3417 7.04882 11.1464 6.85355L8 3.70711L8 12.5C8 12.7761 7.77614 13 7.5 13C7.22386 13 7 12.7761 7 12.5L7 3.70711L3.85355 6.85355C3.65829 7.04882 3.34171 7.04882 3.14645 6.85355C2.95118 6.65829 2.95118 6.34171 3.14645 6.14645L7.14645 2.14645Z"
+                fill="currentColor"
+                fillRule="evenodd"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+            <p className="text-muted" style={{ fontFamily: "PermanentMarker" }}>
+              Draw something on the paper
+            </p>
+          </>
+        );
       case "SHOW_PICTURE":
         return (
-          <div className="w-full bg-neutral-800 h-96" />
-          // <img src={DOMPurify.sanitize(notes?.[0]?.image)} alt="Action image" />
+          <img src={DOMPurify.sanitize(notes?.[0]?.image)} alt="Action image" />
         );
       case "NOTEBOOK_READ":
         return (
@@ -60,7 +109,7 @@ export default function Chapter({ chapter }: ChapterProps) {
   function startAnimatingEllipse() {
     const animation = animate(
       "ellipse",
-      { rx: [380, 390], ry: [290, 275], rotate: [-1, 1] },
+      { rx: [620, 610], ry: [350, 325], rotate: [-1, 1] },
       {
         duration: 3,
         repeat: Infinity,
@@ -80,11 +129,15 @@ export default function Chapter({ chapter }: ChapterProps) {
   }, [isPresent, ellipsisAnimation, safeToRemove]);
 
   return (
-    <section className="mx-auto absolute top-[50%] -translate-y-1/2 max-w-2xl left-0 right-0">
-      <header>
+    <section className="mx-auto absolute top-[50%] -translate-y-2/3 w-[85%] left-0 right-0">
+      <header className="relative">
+        <div className="absolute top-[50%] -translate-y-1/2 left-0 right-0 mx-auto grid items-center text-center justify-center">
+          {renderActions()}
+        </div>
+
         <svg
-          width="800"
-          height="600"
+          width="1280"
+          height="720"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -107,12 +160,12 @@ export default function Chapter({ chapter }: ChapterProps) {
             </filter>
             <mask id="circleMask">
               <motion.ellipse
-                cx="400"
-                cy="300"
+                cx="640"
+                cy="360"
                 fill="white"
                 style={{ filter: "url(#displacementFilter)" }}
                 initial={{ rx: 0, ry: 0, rotate: 1 }}
-                animate={{ rx: 380, ry: 290, rotate: -1 }}
+                animate={{ rx: 620, ry: 350, rotate: -1 }}
                 exit={{ rx: 0, ry: 0, rotate: 1 }}
                 transition={{ duration: 0.75, ease: "easeInOut" }}
                 onAnimationComplete={startAnimatingEllipse}
@@ -120,15 +173,12 @@ export default function Chapter({ chapter }: ChapterProps) {
             </mask>
           </defs>
           <image
-            // xlinkHref={DOMPurify.sanitize(chapter?.image)}
-            xlinkHref={"https://picsum.photos/800/600"}
-            width="800"
-            height="600"
+            xlinkHref={DOMPurify.sanitize(chapter?.image)}
+            width="1280"
+            height="720"
             mask="url(#circleMask)"
           />
         </svg>
-
-        {renderActions()}
       </header>
 
       <ChapterText key={chapter?.id} text={chapter?.text} />

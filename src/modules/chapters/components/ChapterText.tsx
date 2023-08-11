@@ -62,7 +62,11 @@ export default function ChapterText({ text }: { text: string }) {
     }
   }, [isPresent, safeToRemove, animate, scope, text]);
 
-  return <p ref={scope}>{text}</p>;
+  return (
+    <p ref={scope} className="max-w-4xl mx-auto">
+      {text}
+    </p>
+  );
 }
 
 function getRandomInt(min: number, max: number) {
