@@ -11,6 +11,7 @@ import { animate, motion, usePresence } from "framer-motion";
 import ChapterText from "../components/ChapterText";
 import supabase from "@/lib/supabase";
 import { chunk } from "remeda";
+import { getRandomFromArray } from "@/lib/utils";
 
 interface ChapterProps {
   chapter: ChapterContextType["currentChapter"];
@@ -105,7 +106,14 @@ export default function Chapter({ chapter }: ChapterProps) {
                 <p
                   key={note.id}
                   className="text-slate-900 text-[1.75dvw]"
-                  style={{ fontFamily: "PermanentMarker" }}
+                  style={{
+                    fontFamily: getRandomFromArray([
+                      "Caveat",
+                      "PermanentMarker",
+                      "Version01",
+                      "Version03",
+                    ]),
+                  }}
                 >
                   {note.text}
                 </p>
@@ -116,7 +124,14 @@ export default function Chapter({ chapter }: ChapterProps) {
                 <p
                   key={note.id}
                   className="text-slate-900"
-                  style={{ fontFamily: "PermanentMarker" }}
+                  style={{
+                    fontFamily: getRandomFromArray([
+                      "Caveat",
+                      "PermanentMarker",
+                      "Version01",
+                      "Version03",
+                    ]),
+                  }}
                 >
                   {note.text}
                 </p>
@@ -130,7 +145,14 @@ export default function Chapter({ chapter }: ChapterProps) {
             <textarea
               ref={textAreaRef}
               rows={10}
-              style={{ fontFamily: "PermanentMarker" }}
+              style={{
+                fontFamily: getRandomFromArray([
+                  "Caveat",
+                  "PermanentMarker",
+                  "Version01",
+                  "Version03",
+                ]),
+              }}
               className="bg-transparent resize-none text-slate-900 placeholder-slate-800 outline-none"
               placeholder="Type something"
             />

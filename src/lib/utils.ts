@@ -13,3 +13,7 @@ export function debounce(fn: (...args: unknown[]) => void, ms = 300) {
     timeoutId = setTimeout(() => fn.apply(this, args), ms);
   };
 }
+
+export function getRandomFromArray<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
