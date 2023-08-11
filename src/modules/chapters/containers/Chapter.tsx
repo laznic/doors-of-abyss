@@ -104,7 +104,7 @@ export default function Chapter({ chapter }: ChapterProps) {
       case "NOTEBOOK_READ":
         if (!Array.isArray(notes)) return null;
 
-        const [firstColumn, secondColumn] = chunk(notes, 2);
+        const [firstColumn, secondColumn] = chunk(notes, 12);
 
         return (
           <>
@@ -178,8 +178,8 @@ export default function Chapter({ chapter }: ChapterProps) {
   }, [isPresent, ellipsisAnimation, safeToRemove]);
 
   return (
-    <section className="mx-auto absolute top-[50%] -translate-y-2/3 w-[85%] left-0 right-0">
-      <header className="relative max-w-7xl mx-auto">
+    <section className="grid mx-auto items-center justify-center h-full w-[85%] left-0 right-0">
+      <header className="relative max-w-7xl mx-auto my-24">
         <div className="absolute top-[50%] -translate-y-1/2 left-0 right-0 mx-auto grid items-center text-center justify-center">
           {renderActions()}
         </div>
@@ -231,11 +231,45 @@ export default function Chapter({ chapter }: ChapterProps) {
         </svg>
       </header>
 
-      <ChapterText key={chapter?.id} text={chapter?.text} />
+      <section className="grid max-w-4xl mx-auto gap-4">
+        <ChapterText key={chapter?.id} text={chapter?.text} />
 
-      {hasOptions && (
-        <ChapterOptions options={options} onOptionSelect={onOptionSelect} />
-      )}
+        {!hasOptions && (
+          <button className="inline-flex items-center text-sm gap-2 justify-self-end">
+            Continue
+            <div className="relative -mt-2">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 15 15"
+                fill="none"
+                className="absolute top-[6px] -left-1"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M9 4L9 11L4.5 7.5L9 4Z" fill="currentColor"></path>
+              </svg>
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 15 15"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.12263 12H5.1H3.5C3.22386 12 3 11.7761 3 11.5C3 11.2239 3.22386 11 3.5 11H5.1C6.22836 11 7.04455 10.9996 7.68648 10.9472C8.32256 10.8952 8.74338 10.7946 9.08897 10.6185C9.74753 10.283 10.283 9.74753 10.6185 9.08897C10.7946 8.74338 10.8952 8.32256 10.9472 7.68648C10.9996 7.04455 11 6.22836 11 5.1V3.5C11 3.22386 11.2239 3 11.5 3C11.7761 3 12 3.22386 12 3.5V5.1V5.12263C12 6.22359 12 7.08052 11.9438 7.76791C11.8868 8.46584 11.7694 9.0329 11.5095 9.54296C11.0781 10.3897 10.3897 11.0781 9.54296 11.5095C9.0329 11.7694 8.46584 11.8868 7.76791 11.9438C7.08052 12 6.22359 12 5.12263 12Z"
+                  fill="currentColor"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </div>
+          </button>
+        )}
+
+        {hasOptions && (
+          <ChapterOptions options={options} onOptionSelect={onOptionSelect} />
+        )}
+      </section>
     </section>
   );
 }
