@@ -37,7 +37,7 @@
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 167, 30%, 9%;
     --foreground: 0 0% 98%;
 
     --muted: 0 0% 14.9%;
@@ -73,7 +73,43 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground overflow-hidden;
+    @apply text-foreground overflow-hidden;
+    background: radial-gradient(hsl(167, 30%, 3.5%) 65%, hsl(167, 30%, 9%));
+    width: 100dvw;
+    height: 100dvh;
+    font-family: "Redaction", Cambria, Cochin, Georgia, Times, "Times New Roman",
+      serif;
+    font-size: 24px;
+  }
+
+  @font-face {
+    font-family: "Caveat";
+    src: url("/fonts/Caveat-VariableFont_wght.ttf") format("truetype");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "PermanentMarker";
+    src: url("/fonts/PermanentMarker-Regular.ttf") format("truetype");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Redaction";
+    src: url("/fonts/Redaction_20-Italic.woff2") format("woff2");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Version01";
+    src: url("/fonts/Version_0.1_100_skeletor.ttf") format("truetype");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Version03";
+    src: url("/fonts/Version_0.1_100_skeletor_avec.ttf") format("truetype");
+    font-weight: 400;
   }
 }
 
