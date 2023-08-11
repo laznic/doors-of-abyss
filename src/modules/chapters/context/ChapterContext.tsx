@@ -177,5 +177,10 @@ function fetchNotesByAction(actionType?: ActionType) {
     return supabase.rpc("get_random_image");
   }
 
-  return supabase.from("notes").select("id, text").is("image", null);
+  return supabase
+    .from("notes")
+    .select("id, text")
+    .is("image", null)
+    .limit(24)
+    .order("id", { ascending: false });
 }

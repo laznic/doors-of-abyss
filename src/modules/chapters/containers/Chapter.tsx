@@ -10,6 +10,7 @@ import useKeyPress from "../hooks/useKeyPress";
 import { animate, motion, usePresence } from "framer-motion";
 import ChapterText from "../components/ChapterText";
 import supabase from "@/lib/supabase";
+import { chunk } from "remeda";
 
 interface ChapterProps {
   chapter: ChapterContextType["currentChapter"];
@@ -93,9 +94,35 @@ export default function Chapter({ chapter }: ChapterProps) {
           <img src={DOMPurify.sanitize(notes?.[0]?.image)} alt="Action image" />
         );
       case "NOTEBOOK_READ":
+        if (!Array.isArray(notes)) return null;
+
+        const [firstColumn, secondColumn] = chunk(notes, 2);
+
         return (
-          Array.isArray(notes) &&
-          notes.map((note) => <p key={note.id}>{note.text}</p>)
+          <>
+            <div className="leading-8 absolute left-80 w-72 h-80 -skew-x-[28deg] -top-64 rotate-12 text-left overflow-hidden whitespace-normal">
+              {firstColumn?.map((note) => (
+                <p
+                  key={note.id}
+                  className="text-slate-900"
+                  style={{ fontFamily: "PermanentMarker" }}
+                >
+                  {note.text}
+                </p>
+              ))}
+            </div>
+            <div className="leading-8 absolute left-[730px] w-64 h-96 -skew-x-[16deg] -top-48 rotate-12 text-left overflow-hidden whitespace-normal">
+              {secondColumn?.map((note) => (
+                <p
+                  key={note.id}
+                  className="text-slate-900"
+                  style={{ fontFamily: "PermanentMarker" }}
+                >
+                  {note.text}
+                </p>
+              ))}
+            </div>
+          </>
         );
       case "NOTEBOOK_WRITE":
         return <input type="text" />;
@@ -130,7 +157,7 @@ export default function Chapter({ chapter }: ChapterProps) {
 
   return (
     <section className="mx-auto absolute top-[50%] -translate-y-2/3 w-[85%] left-0 right-0">
-      <header className="relative">
+      <header className="relative max-w-7xl mx-auto">
         <div className="absolute top-[50%] -translate-y-1/2 left-0 right-0 mx-auto grid items-center text-center justify-center">
           {renderActions()}
         </div>
@@ -139,6 +166,7 @@ export default function Chapter({ chapter }: ChapterProps) {
           width="1280"
           height="720"
           version="1.1"
+          className="mx-auto"
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
         >
