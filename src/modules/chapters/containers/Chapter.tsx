@@ -168,7 +168,7 @@ export default function Chapter({ chapter }: ChapterProps) {
   function startAnimatingEllipse() {
     const animation = animate(
       "ellipse",
-      { rx: ["49%", "42%"], ry: ["48%", "45%"], rotate: [-1, 1] },
+      { rx: ["49%", "46%"], ry: ["48%", "45%"], rotate: [-1, 1] },
       {
         duration: 3,
         repeat: Infinity,
