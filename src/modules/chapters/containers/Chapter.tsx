@@ -22,6 +22,7 @@ export default function Chapter({ chapter }: ChapterProps) {
   const options = chapter?.options || [];
   const notes = chapter?.notes || [];
   const canvasRef = useRef<HTMLCanvasElement>();
+  const textAreaRef = useRef<HTMLTextAreaElement>();
   const hasOptions = options.length > 0;
   const [ellipsisAnimation, setEllipsisAnimation] = useState();
   const [isPresent, safeToRemove] = usePresence();
@@ -53,11 +54,18 @@ export default function Chapter({ chapter }: ChapterProps) {
         });
 
         if (noteError) return console.error(noteError);
-
-        goToNextChapter?.(action?.id);
       });
+    }
 
-      return;
+    if (action?.action_type === "NOTEBOOK_WRITE") {
+      const { error: noteError } = await supabase
+        .from("notes")
+        .insert({
+          text: textAreaRef.current?.value,
+        })
+        .single();
+
+      if (noteError) return console.error(noteError);
     }
 
     goToNextChapter?.(action?.id);
@@ -125,7 +133,17 @@ export default function Chapter({ chapter }: ChapterProps) {
           </>
         );
       case "NOTEBOOK_WRITE":
-        return <input type="text" />;
+        return (
+          <div className="leading-8 absolute left-80 w-72 h-80 -skew-x-[28deg] -top-64 rotate-12 text-left overflow-hidden whitespace-normal">
+            <textarea
+              ref={textAreaRef}
+              rows={10}
+              style={{ fontFamily: "PermanentMarker" }}
+              className="bg-transparent resize-none text-slate-900 placeholder-slate-800 outline-none"
+              placeholder="Type something"
+            />
+          </div>
+        );
       default:
         return null;
     }
@@ -149,6 +167,10 @@ export default function Chapter({ chapter }: ChapterProps) {
   }
 
   useEffect(() => {
+    if (isPresent) {
+      textAreaRef.current?.focus();
+    }
+
     if (!isPresent) {
       ellipsisAnimation?.stop();
       safeToRemove();
