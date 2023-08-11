@@ -1,15 +1,26 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import { debounce } from "@/lib/utils";
+import React, { forwardRef, useCallback, useEffect, useState } from "react";
 
 export default forwardRef(function Canvas(props, canvasRef) {
   const [isDrawing, setIsDrawing] = useState(false);
   const [lastPoint, setLastPoint] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
+  const setCanvasSize = useCallback(() => {
     const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
 
-    context?.clearRect(0, 0, canvas?.width, canvas?.height);
+    canvas?.setAttribute("width", `${window.innerWidth / 3}px`);
+    canvas?.setAttribute("height", `${window.innerWidth / 6}px`);
   }, [canvasRef]);
+
+  useEffect(() => {
+    setCanvasSize();
+
+    window.addEventListener("resize", debounce(setCanvasSize));
+
+    return () => {
+      window.removeEventListener("resize", debounce(setCanvasSize));
+    };
+  }, [canvasRef, setCanvasSize]);
 
   const startDrawing = (event: MouseEvent | TouchEvent) => {
     const canvas = canvasRef?.current;
@@ -70,8 +81,7 @@ export default forwardRef(function Canvas(props, canvasRef) {
   return (
     <canvas
       ref={canvasRef}
-      width={720}
-      height={400}
+      width={"100%"}
       onMouseDown={startDrawing}
       onMouseMove={drawLine}
       onMouseUp={stopDrawing}

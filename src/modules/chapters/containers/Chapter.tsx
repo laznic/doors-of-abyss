@@ -77,29 +77,21 @@ export default function Chapter({ chapter }: ChapterProps) {
         return (
           <>
             <Canvas ref={canvasRef} />
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 15 15"
-              fill="none"
-              className="mx-auto text-muted mt-8"
-              xmlns="http://www.w3.org/2000/svg"
+            <p
+              className="text-muted -mb-20"
+              style={{ fontFamily: "PermanentMarker" }}
             >
-              <path
-                d="M7.14645 2.14645C7.34171 1.95118 7.65829 1.95118 7.85355 2.14645L11.8536 6.14645C12.0488 6.34171 12.0488 6.65829 11.8536 6.85355C11.6583 7.04882 11.3417 7.04882 11.1464 6.85355L8 3.70711L8 12.5C8 12.7761 7.77614 13 7.5 13C7.22386 13 7 12.7761 7 12.5L7 3.70711L3.85355 6.85355C3.65829 7.04882 3.34171 7.04882 3.14645 6.85355C2.95118 6.65829 2.95118 6.34171 3.14645 6.14645L7.14645 2.14645Z"
-                fill="currentColor"
-                fillRule="evenodd"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            <p className="text-muted" style={{ fontFamily: "PermanentMarker" }}>
               Draw something on the paper
             </p>
           </>
         );
       case "SHOW_PICTURE":
         return (
-          <img src={DOMPurify.sanitize(notes?.[0]?.image)} alt="Action image" />
+          <img
+            className="w-[67dvw] mx-auto h-auto"
+            src={DOMPurify.sanitize(notes?.[0]?.image)}
+            alt="Action image"
+          />
         );
       case "NOTEBOOK_READ":
         if (!Array.isArray(notes)) return null;
@@ -108,18 +100,18 @@ export default function Chapter({ chapter }: ChapterProps) {
 
         return (
           <>
-            <div className="leading-8 absolute left-80 w-72 h-80 -skew-x-[28deg] -top-64 rotate-12 text-left overflow-hidden whitespace-normal">
+            <div className="leading-[1.75dvw] absolute -top-[13dvw] left-0 w-[14dvw] h-[17dvw] -skew-x-[28deg] rotate-12 text-left overflow-hidden whitespace-normal">
               {firstColumn?.map((note) => (
                 <p
                   key={note.id}
-                  className="text-slate-900"
+                  className="text-slate-900 text-[1.75dvw]"
                   style={{ fontFamily: "PermanentMarker" }}
                 >
                   {note.text}
                 </p>
               ))}
             </div>
-            <div className="leading-8 absolute left-[730px] w-64 h-96 -skew-x-[16deg] -top-48 rotate-12 text-left overflow-hidden whitespace-normal">
+            <div className="leading-[1.75dvw] absolute left-[18.5dvw] -top-[9dvw] w-[13dvw] h-[18dvw] -skew-x-[16deg] rotate-12 text-left overflow-hidden whitespace-normal">
               {secondColumn?.map((note) => (
                 <p
                   key={note.id}
@@ -154,7 +146,7 @@ export default function Chapter({ chapter }: ChapterProps) {
   function startAnimatingEllipse() {
     const animation = animate(
       "ellipse",
-      { rx: [620, 610], ry: [350, 325], rotate: [-1, 1] },
+      { rx: ["49%", "42%"], ry: ["48%", "45%"], rotate: [-1, 1] },
       {
         duration: 3,
         repeat: Infinity,
@@ -179,16 +171,14 @@ export default function Chapter({ chapter }: ChapterProps) {
 
   return (
     <section className="grid mx-auto items-center justify-center h-full w-[85%] left-0 right-0">
-      <header className="relative max-w-7xl mx-auto my-24">
-        <div className="absolute top-[50%] -translate-y-1/2 left-0 right-0 mx-auto grid items-center text-center justify-center">
+      <header className="relative mx-auto my-24">
+        <div className="absolute w-1/2 top-[50%] -translate-y-1/2 left-0 right-0 mx-auto grid items-center text-center justify-center">
           {renderActions()}
         </div>
 
         <svg
-          width="1280"
-          height="720"
           version="1.1"
-          className="mx-auto"
+          className="mx-auto aspect-video h-[33dvw] min-h-[240px]"
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
         >
@@ -210,12 +200,12 @@ export default function Chapter({ chapter }: ChapterProps) {
             </filter>
             <mask id="circleMask">
               <motion.ellipse
-                cx="640"
-                cy="360"
+                cx="50%"
+                cy="50%"
                 fill="white"
                 style={{ filter: "url(#displacementFilter)" }}
                 initial={{ rx: 0, ry: 0, rotate: 1 }}
-                animate={{ rx: 620, ry: 350, rotate: -1 }}
+                animate={{ rx: "49%", ry: "48%", rotate: -1 }}
                 exit={{ rx: 0, ry: 0, rotate: 1 }}
                 transition={{ duration: 0.75, ease: "easeInOut" }}
                 onAnimationComplete={startAnimatingEllipse}
@@ -223,9 +213,8 @@ export default function Chapter({ chapter }: ChapterProps) {
             </mask>
           </defs>
           <image
+            width="100%"
             xlinkHref={DOMPurify.sanitize(chapter?.image)}
-            width="1280"
-            height="720"
             mask="url(#circleMask)"
           />
         </svg>
@@ -235,7 +224,10 @@ export default function Chapter({ chapter }: ChapterProps) {
         <ChapterText key={chapter?.id} text={chapter?.text} />
 
         {!hasOptions && (
-          <button className="inline-flex items-center text-sm gap-2 justify-self-end">
+          <button
+            onClick={handleContinue}
+            className="inline-flex items-center text-sm gap-2 justify-self-end"
+          >
             Continue
             <div className="relative -mt-2">
               <svg

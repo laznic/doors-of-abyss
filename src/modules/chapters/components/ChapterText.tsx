@@ -63,7 +63,7 @@ export default function ChapterText({ text }: { text: string }) {
   }, [isPresent, safeToRemove, animate, scope, text]);
 
   return (
-    <p ref={scope} className="max-w-4xl mx-auto">
+    <p className="text-[18px] md:text-2xl" ref={scope}>
       {text}
     </p>
   );
