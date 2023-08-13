@@ -38,12 +38,13 @@ export default function ChapterOptions({
             <li key={option.id}>
               <button
                 onClick={() => onOptionSelect(option.id)}
-                className={`flex items-center ${
+                className={`flex text-left ${
                   isActive ? "text-white" : "text-neutral-500"
                 }`}
               >
                 {isActive && (
                   <svg
+                    className="mt-1"
                     width="25"
                     height="25"
                     viewBox="0 0 15 15"

@@ -1,6 +1,7 @@
 import { Database } from "@/database.types";
 import supabase from "@/lib/supabase";
 import { PostgrestBuilder } from "@supabase/postgrest-js";
+import { Howl } from "howler";
 import React, {
   useContext,
   createContext,
@@ -87,10 +88,15 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
   );
 
   async function goToNextChapter(id?: number, isOption?: "action" | "option") {
+    new Howl({
+      src: [`/sounds/exhale.mp3`],
+    }).play();
+
     if (!id) {
       const shouldKeepNotes =
         Array.isArray(state.nextChapter.notes) &&
         state.nextChapter.notes.length > 0;
+
       return setState({ currentChapter: state.nextChapter, shouldKeepNotes });
     }
 
@@ -137,6 +143,7 @@ function fetchChapterFromSupabase(chapterId: number): ChapterFetchReturnType {
       image,
       next_chapter_id,
       is_last,
+      loop_sound,
       decisions!decisions_chapter_id_fkey(
         id,
         go_to_chapter_id

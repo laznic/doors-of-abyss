@@ -96,7 +96,7 @@ export default function Chapter({ chapter }: ChapterProps) {
       case "SHOW_PICTURE":
         return (
           <img
-            className="w-[50dvw] mx-auto h-auto -mt-9"
+            className="w-[50dvw] mx-auto h-auto -mt-[15dvw]"
             src={DOMPurify.sanitize(notes?.[0]?.image)}
             alt="Action image"
           />

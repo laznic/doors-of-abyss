@@ -60,6 +60,7 @@ serve(async (req) => {
         image,
         next_chapter_id,
         is_last,
+        loop_sound,
         decisions!decisions_chapter_id_fkey(
           id,
           go_to_chapter_id
