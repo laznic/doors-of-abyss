@@ -9,6 +9,8 @@ export const usePlaySound = (soundName: string, loop?: boolean) => {
   const prevSoundId = useRef<number>();
 
   useEffect(() => {
+    if (!soundName) return;
+
     if (soundOn) {
       sound.current?.fade(1, 0, 2000);
 
