@@ -243,7 +243,7 @@ export default function Chapter({ chapter }: ChapterProps) {
       </header>
 
       <section className="grid max-w-4xl mx-auto gap-4">
-        <ChapterText key={chapter?.id} text={chapter?.text} />
+        {chapter?.text && <ChapterText key={chapter?.id} text={chapter.text} />}
 
         {!hasOptions && (
           <button
