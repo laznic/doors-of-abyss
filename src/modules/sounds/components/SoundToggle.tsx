@@ -5,7 +5,7 @@ export default function SoundToggle() {
   const { soundOn, toggleSound } = useSoundContext();
 
   return (
-    <button onClick={toggleSound}>
+    <button className="p-2" onClick={toggleSound}>
       {soundOn ? (
         <svg
           width="20"
