@@ -30,13 +30,17 @@ export default function Chapter({ chapter }: ChapterProps) {
   const [loading, setLoading] = useState(false);
 
   function onOptionSelect(id: number) {
+    if (loading) return;
+
+    setLoading(true);
     goToNextChapter?.(id, true);
   }
 
   async function handleContinue() {
-    setLoading(true);
-
+    if (loading) return;
     if (options.length > 0) return;
+
+    setLoading(true);
 
     if (action?.action_type === "DRAW") {
       canvasRef.current?.toBlob(async function (blob) {
