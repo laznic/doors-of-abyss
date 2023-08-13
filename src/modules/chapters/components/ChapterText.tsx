@@ -60,7 +60,7 @@ export default function ChapterText({ text }: { text: string }) {
         exitAnimation();
       }
     }
-  }, [isPresent, safeToRemove, animate, scope, text]);
+  }, [isPresent]);
 
   return (
     <p className="text-[18px] md:text-2xl" ref={scope}>
