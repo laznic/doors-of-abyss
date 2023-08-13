@@ -40,7 +40,7 @@ export default function ChapterOptions({
               <Button
                 variant={"ghost"}
                 onClick={() => onOptionSelect(option.id)}
-                className={`flex text-left pr-7 text-md ${
+                className={`flex text-left pr-7 text-md h-auto ${
                   isActive ? "text-white" : "text-neutral-500"
                 }`}
               >
