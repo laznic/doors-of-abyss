@@ -6,7 +6,7 @@ function App() {
   usePlaySound("background_loop", true);
 
   return (
-    <main className="relative w-full">
+    <main className="relative w-full h-full">
       <Chapters />
     </main>
   );

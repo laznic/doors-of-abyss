@@ -37,7 +37,7 @@
   }
 
   .dark {
-    --background: 167, 30%, 9%;
+    --background: 0 0% 0.3%;
     --foreground: 0 0% 98%;
 
     --muted: 0 0% 14.9%;
@@ -73,13 +73,17 @@
     @apply border-border;
   }
   body {
-    @apply text-foreground overflow-hidden;
-    background: radial-gradient(hsl(167, 30%, 3.5%) 65%, hsl(167, 30%, 9%));
+    @apply bg-background text-foreground overflow-hidden;
+    /* background: radial-gradient(hsl(167, 30%, 3.5%) 65%, hsl(167, 30%, 9%)); */
     width: 100dvw;
     height: 100dvh;
     font-family: "Redaction", Cambria, Cochin, Georgia, Times, "Times New Roman",
       serif;
     font-size: 24px;
+  }
+
+  #root {
+    @apply h-full w-full;
   }
 
   @font-face {

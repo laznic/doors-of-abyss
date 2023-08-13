@@ -96,7 +96,7 @@ export default function Chapter({ chapter }: ChapterProps) {
       case "SHOW_PICTURE":
         return (
           <img
-            className="w-[67dvw] mx-auto h-auto"
+            className="w-[50dvw] mx-auto h-auto -mt-9"
             src={DOMPurify.sanitize(notes?.[0]?.image)}
             alt="Action image"
           />
@@ -108,7 +108,7 @@ export default function Chapter({ chapter }: ChapterProps) {
 
         return (
           <>
-            <div className="leading-[1.75dvw] absolute -top-[13dvw] left-0 w-[14dvw] h-[17dvw] -skew-x-[28deg] rotate-12 text-left overflow-hidden whitespace-normal">
+            <div className="leading-[1.75dvw] absolute -top-[20dvw] left-[7dvw] w-[15dvw] h-[20dvw] -skew-x-[28deg] rotate-12 text-left overflow-hidden whitespace-normal">
               {firstColumn?.map((note) => (
                 <p
                   key={note.id}
@@ -126,7 +126,7 @@ export default function Chapter({ chapter }: ChapterProps) {
                 </p>
               ))}
             </div>
-            <div className="leading-[1.75dvw] absolute left-[18.5dvw] -top-[9dvw] w-[13dvw] h-[18dvw] -skew-x-[16deg] rotate-12 text-left overflow-hidden whitespace-normal">
+            <div className="leading-[1.75dvw] absolute left-[30dvw] -top-[15dvw] w-[15dvw] h-[20dvw] -skew-x-[16deg] rotate-12 text-left overflow-hidden whitespace-normal">
               {secondColumn?.map((note) => (
                 <p
                   key={note.id}
@@ -199,15 +199,15 @@ export default function Chapter({ chapter }: ChapterProps) {
   }, [isPresent, ellipsisAnimation, safeToRemove]);
 
   return (
-    <section className="grid mx-auto items-center justify-center h-full w-[85%] left-0 right-0">
-      <header className="relative mx-auto my-12 md:my-24 w-full">
+    <section className="grid mx-auto h-full w-full">
+      <header className="relative w-full mt-12">
         <div className="absolute w-1/2 top-[50%] -translate-y-1/2 left-0 right-0 mx-auto grid items-center text-center justify-center">
           {renderActions()}
         </div>
 
         <svg
           version="1.1"
-          className="mx-auto aspect-video h-[33dvw] min-h-[240px]"
+          className="mx-auto aspect-video h-[40dvw] min-h-[240px]"
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
         >
@@ -249,65 +249,49 @@ export default function Chapter({ chapter }: ChapterProps) {
         </svg>
       </header>
 
-      <section className="grid max-w-4xl mx-auto gap-4 w-full relative">
+      <section className="flex w-[70%] left-0 right-0 mx-auto gap-12 absolute bg-black/75 justify-center bottom-12 pt-12 p-8 h-[12dvw]">
         {chapter?.text && <ChapterText key={chapter?.id} text={chapter.text} />}
-
-        {!hasOptions && !loading && (
-          <button
-            onClick={handleContinue}
-            className="inline-flex items-center text-sm gap-2 justify-self-end"
-          >
-            Continue
-            <div className="relative -mt-2">
+        <div className="w-1/3">
+          {!hasOptions && !loading && (
+            <button
+              onClick={handleContinue}
+              className="inline-flex items-center gap-2"
+            >
               <svg
-                width="22"
-                height="22"
-                viewBox="0 0 15 15"
-                fill="none"
-                className="absolute top-[6px] -left-1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M9 4L9 11L4.5 7.5L9 4Z" fill="currentColor"></path>
-              </svg>
-              <svg
-                width="22"
-                height="22"
+                width="25"
+                height="25"
                 viewBox="0 0 15 15"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  d="M5.12263 12H5.1H3.5C3.22386 12 3 11.7761 3 11.5C3 11.2239 3.22386 11 3.5 11H5.1C6.22836 11 7.04455 10.9996 7.68648 10.9472C8.32256 10.8952 8.74338 10.7946 9.08897 10.6185C9.74753 10.283 10.283 9.74753 10.6185 9.08897C10.7946 8.74338 10.8952 8.32256 10.9472 7.68648C10.9996 7.04455 11 6.22836 11 5.1V3.5C11 3.22386 11.2239 3 11.5 3C11.7761 3 12 3.22386 12 3.5V5.1V5.12263C12 6.22359 12 7.08052 11.9438 7.76791C11.8868 8.46584 11.7694 9.0329 11.5095 9.54296C11.0781 10.3897 10.3897 11.0781 9.54296 11.5095C9.0329 11.7694 8.46584 11.8868 7.76791 11.9438C7.08052 12 6.22359 12 5.12263 12Z"
-                  fill="currentColor"
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                ></path>
+                <path d="M6 11L6 4L10.5 7.5L6 11Z" fill="currentColor"></path>
               </svg>
-            </div>
-          </button>
-        )}
+              Continue
+            </button>
+          )}
 
-        {loading && (
-          <svg
-            className="absolute right-0 -bottom-8 animate-spin z-10"
-            width="15"
-            height="15"
-            viewBox="0 0 15 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1.90321 7.29677C1.90321 10.341 4.11041 12.4147 6.58893 12.8439C6.87255 12.893 7.06266 13.1627 7.01355 13.4464C6.96444 13.73 6.69471 13.9201 6.41109 13.871C3.49942 13.3668 0.86084 10.9127 0.86084 7.29677C0.860839 5.76009 1.55996 4.55245 2.37639 3.63377C2.96124 2.97568 3.63034 2.44135 4.16846 2.03202L2.53205 2.03202C2.25591 2.03202 2.03205 1.80816 2.03205 1.53202C2.03205 1.25588 2.25591 1.03202 2.53205 1.03202L5.53205 1.03202C5.80819 1.03202 6.03205 1.25588 6.03205 1.53202L6.03205 4.53202C6.03205 4.80816 5.80819 5.03202 5.53205 5.03202C5.25591 5.03202 5.03205 4.80816 5.03205 4.53202L5.03205 2.68645L5.03054 2.68759L5.03045 2.68766L5.03044 2.68767L5.03043 2.68767C4.45896 3.11868 3.76059 3.64538 3.15554 4.3262C2.44102 5.13021 1.90321 6.10154 1.90321 7.29677ZM13.0109 7.70321C13.0109 4.69115 10.8505 2.6296 8.40384 2.17029C8.12093 2.11718 7.93465 1.84479 7.98776 1.56188C8.04087 1.27898 8.31326 1.0927 8.59616 1.14581C11.4704 1.68541 14.0532 4.12605 14.0532 7.70321C14.0532 9.23988 13.3541 10.4475 12.5377 11.3662C11.9528 12.0243 11.2837 12.5586 10.7456 12.968L12.3821 12.968C12.6582 12.968 12.8821 13.1918 12.8821 13.468C12.8821 13.7441 12.6582 13.968 12.3821 13.968L9.38205 13.968C9.10591 13.968 8.88205 13.7441 8.88205 13.468L8.88205 10.468C8.88205 10.1918 9.10591 9.96796 9.38205 9.96796C9.65819 9.96796 9.88205 10.1918 9.88205 10.468L9.88205 12.3135L9.88362 12.3123C10.4551 11.8813 11.1535 11.3546 11.7585 10.6738C12.4731 9.86976 13.0109 8.89844 13.0109 7.70321Z"
-              fill="currentColor"
-              fillRule="evenodd"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-        )}
+          {loading && (
+            <svg
+              className="animate-spin z-10 mt-1"
+              width="24"
+              height="24"
+              viewBox="0 0 15 15"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1.90321 7.29677C1.90321 10.341 4.11041 12.4147 6.58893 12.8439C6.87255 12.893 7.06266 13.1627 7.01355 13.4464C6.96444 13.73 6.69471 13.9201 6.41109 13.871C3.49942 13.3668 0.86084 10.9127 0.86084 7.29677C0.860839 5.76009 1.55996 4.55245 2.37639 3.63377C2.96124 2.97568 3.63034 2.44135 4.16846 2.03202L2.53205 2.03202C2.25591 2.03202 2.03205 1.80816 2.03205 1.53202C2.03205 1.25588 2.25591 1.03202 2.53205 1.03202L5.53205 1.03202C5.80819 1.03202 6.03205 1.25588 6.03205 1.53202L6.03205 4.53202C6.03205 4.80816 5.80819 5.03202 5.53205 5.03202C5.25591 5.03202 5.03205 4.80816 5.03205 4.53202L5.03205 2.68645L5.03054 2.68759L5.03045 2.68766L5.03044 2.68767L5.03043 2.68767C4.45896 3.11868 3.76059 3.64538 3.15554 4.3262C2.44102 5.13021 1.90321 6.10154 1.90321 7.29677ZM13.0109 7.70321C13.0109 4.69115 10.8505 2.6296 8.40384 2.17029C8.12093 2.11718 7.93465 1.84479 7.98776 1.56188C8.04087 1.27898 8.31326 1.0927 8.59616 1.14581C11.4704 1.68541 14.0532 4.12605 14.0532 7.70321C14.0532 9.23988 13.3541 10.4475 12.5377 11.3662C11.9528 12.0243 11.2837 12.5586 10.7456 12.968L12.3821 12.968C12.6582 12.968 12.8821 13.1918 12.8821 13.468C12.8821 13.7441 12.6582 13.968 12.3821 13.968L9.38205 13.968C9.10591 13.968 8.88205 13.7441 8.88205 13.468L8.88205 10.468C8.88205 10.1918 9.10591 9.96796 9.38205 9.96796C9.65819 9.96796 9.88205 10.1918 9.88205 10.468L9.88205 12.3135L9.88362 12.3123C10.4551 11.8813 11.1535 11.3546 11.7585 10.6738C12.4731 9.86976 13.0109 8.89844 13.0109 7.70321Z"
+                fill="currentColor"
+                fillRule="evenodd"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+          )}
 
-        {hasOptions && (
-          <ChapterOptions options={options} onOptionSelect={onOptionSelect} />
-        )}
+          {hasOptions && !loading && (
+            <ChapterOptions options={options} onOptionSelect={onOptionSelect} />
+          )}
+        </div>
       </section>
     </section>
   );

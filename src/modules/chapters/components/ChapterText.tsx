@@ -63,11 +63,11 @@ export default function ChapterText({ text }: { text: string }) {
   }, [isPresent]);
 
   return (
-    <div className="relative max-h-[340px]">
-      <div className="-bottom-[1px] absolute block w-full h-full shadow-[0_-25px_60px_-15px_#000_inset] pointer-events-none z-10" />
+    <div className="relative h-full overflow-hidden max-h-[8dvw] w-2/3 max-w-[800px]">
+      <div className="-bottom-[1px] absolute block w-full h-full shadow-[-25px_-25px_60px_-15px_#000_inset] pointer-events-none z-10 " />
 
-      <div className="max-h-[340px] overflow-y-auto pb-10">
-        <p className="text-[18px] md:text-2xl px-8" ref={scope}>
+      <div className="h-full overflow-y-auto pb-8 pr-8">
+        <p className="text-[18px] md:text-2xl" ref={scope}>
           {text}
         </p>
       </div>

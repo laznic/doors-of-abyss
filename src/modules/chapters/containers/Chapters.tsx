@@ -8,11 +8,13 @@ export default function Chapters() {
   const { currentChapter } = useChapterContext();
 
   return (
-    <AnimatePresence mode={"wait"}>
+    <>
       <div className="absolute right-4 top-4">
         <SoundToggle />
       </div>
-      <Chapter key={currentChapter?.id} chapter={currentChapter} />;
-    </AnimatePresence>
+      <AnimatePresence mode={"wait"}>
+        <Chapter key={currentChapter?.id} chapter={currentChapter} />;
+      </AnimatePresence>
+    </>
   );
 }
