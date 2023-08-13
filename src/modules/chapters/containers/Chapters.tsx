@@ -1,3 +1,4 @@
+import { Logotype } from "@/components/ui/logo";
 import SoundToggle from "@/modules/sounds/components/SoundToggle";
 import { AnimatePresence } from "framer-motion";
 import React from "react";
@@ -10,6 +11,9 @@ export default function Chapters() {
 
   return (
     <>
+      <div className="absolute left-4 top-4">
+        <Logotype className="w-48" />
+      </div>
       <div className="absolute right-4 top-4">
         <SoundToggle />
       </div>

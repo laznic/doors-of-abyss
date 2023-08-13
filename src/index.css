@@ -115,6 +115,22 @@
     src: url("/fonts/Version_0.3_100_skeletor_avec.ttf") format("truetype");
     font-weight: 400;
   }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-700;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-md bg-neutral-500;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-neutral-400;
+  }
 }
 
 .word {
