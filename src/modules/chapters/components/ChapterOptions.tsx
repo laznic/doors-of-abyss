@@ -29,13 +29,39 @@ export default function ChapterOptions({
   });
 
   return (
-    <section>
+    <section className="px-8">
       <ul>
-        {options.map((option, index) => (
-          <li key={option.id}>
-            {option.text} {`is active: ${activeOption === index}`}
-          </li>
-        ))}
+        {options.map((option, index) => {
+          const isActive = activeOption === index;
+
+          return (
+            <li key={option.id}>
+              <button
+                onClick={() => onOptionSelect(option.id)}
+                className={`flex items-center ${
+                  isActive ? "text-white" : "text-neutral-500"
+                }`}
+              >
+                {isActive && (
+                  <svg
+                    width="25"
+                    height="25"
+                    viewBox="0 0 15 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6 11L6 4L10.5 7.5L6 11Z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                )}
+
+                {option.text}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );
