@@ -9,9 +9,9 @@ export const usePlaySound = (soundName: string, loop?: boolean) => {
   const prevSoundId = useRef<number>();
 
   useEffect(() => {
-    if (!soundName) return;
-
     if (soundOn) {
+      if (!soundName) return;
+
       sound.current?.fade(1, 0, 2000);
 
       sound.current = new Howl({
@@ -30,6 +30,8 @@ export const usePlaySound = (soundName: string, loop?: boolean) => {
       prevSound.current = sound.current;
       prevSoundId.current = id;
     } else {
+      if (!soundName) return;
+
       sound.current?.stop();
     }
   }, [loop, soundName, soundOn]);
