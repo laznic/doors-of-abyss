@@ -1,5 +1,6 @@
 import { Database } from "@/database.types";
 import supabase from "@/lib/supabase";
+import { useSoundContext } from "@/modules/sounds/context/SoundContext";
 import { PostgrestBuilder } from "@supabase/postgrest-js";
 import { Howl } from "howler";
 import React, {
@@ -52,6 +53,7 @@ const initialState = {
 export function ChapterContextProvider(props: { children: ReactNode }) {
   const { children } = props;
   const [state, setState] = useReducer(reducer, initialState);
+  const { soundOn } = useSoundContext();
 
   useEffect(
     function fetchChapterData() {
@@ -93,9 +95,11 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
   );
 
   async function goToNextChapter(id?: number, isOption?: "action" | "option") {
-    new Howl({
-      src: [`/sounds/exhale.mp3`],
-    }).play();
+    if (soundOn) {
+      new Howl({
+        src: [`/sounds/exhale.mp3`],
+      }).play();
+    }
 
     if (!id) {
       const shouldKeepNotes =
@@ -123,9 +127,11 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
   function passIntro() {
     if (!state.inIntro) return;
 
-    new Howl({
-      src: [`/sounds/exhale.mp3`],
-    }).play();
+    if (soundOn) {
+      new Howl({
+        src: [`/sounds/exhale.mp3`],
+      }).play();
+    }
 
     setState({ inIntro: false });
   }
