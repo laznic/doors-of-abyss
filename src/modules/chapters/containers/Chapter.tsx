@@ -28,6 +28,7 @@ export default function Chapter({ chapter }: ChapterProps) {
   const [ellipsisAnimation, setEllipsisAnimation] = useState();
   const [isPresent, safeToRemove] = usePresence();
   const [loading, setLoading] = useState(false);
+  const [canAnimate, setCanAnimate] = useState(false);
 
   function onOptionSelect(id: number) {
     if (loading) return;
@@ -234,7 +235,9 @@ export default function Chapter({ chapter }: ChapterProps) {
                 fill="white"
                 style={{ filter: "url(#displacementFilter)" }}
                 initial={{ rx: 0, ry: 0, rotate: 1 }}
-                animate={{ rx: "49%", ry: "47%", rotate: -1 }}
+                animate={
+                  canAnimate ? { rx: "49%", ry: "47%", rotate: -1 } : false
+                }
                 exit={{ rx: 0, ry: 0, rotate: 1 }}
                 transition={{ duration: 0.75, ease: "easeInOut" }}
                 onAnimationComplete={startAnimatingEllipse}
@@ -243,6 +246,7 @@ export default function Chapter({ chapter }: ChapterProps) {
           </defs>
           <image
             width="100%"
+            onLoad={() => setCanAnimate(true)}
             xlinkHref={DOMPurify.sanitize(chapter?.image)}
             mask="url(#circleMask)"
           />
