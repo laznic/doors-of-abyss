@@ -37,18 +37,20 @@ serve(async (req) => {
     });
   }
 
-  const { error: decisionError } = await supabaseClient
-    .from("decisions")
-    .insert({
-      chapter_id: option.decision_target_chapter_id,
-      go_to_chapter_id: option.decision_go_to_chapter_id,
-    });
+  if (option.decision_target_chapter_id) {
+    const { error: decisionError } = await supabaseClient
+      .from("decisions")
+      .insert({
+        chapter_id: option.decision_target_chapter_id,
+        go_to_chapter_id: option.decision_go_to_chapter_id,
+      });
 
-  if (decisionError) {
-    return new Response(JSON.stringify({ error: decisionError }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 500,
-    });
+    if (decisionError) {
+      return new Response(JSON.stringify({ error: decisionError }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 500,
+      });
+    }
   }
 
   const { data: nextChapter } = await supabaseClient
