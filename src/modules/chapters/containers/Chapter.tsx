@@ -12,13 +12,14 @@ import ChapterText from "../components/ChapterText";
 import supabase from "@/lib/supabase";
 import { chunk } from "remeda";
 import { getRandomFromArray } from "@/lib/utils";
+import { usePlaySound } from "@/modules/sounds/hooks/usePlaySound";
 
 interface ChapterProps {
   chapter: ChapterContextType["currentChapter"];
 }
 
 export default function Chapter({ chapter }: ChapterProps) {
-  const { goToNextChapter } = useChapterContext();
+  const { goToNextChapter, inIntro } = useChapterContext();
   const [action] = chapter?.actions || [];
   const options = chapter?.options || [];
   const notes = chapter?.notes || [];
@@ -29,6 +30,8 @@ export default function Chapter({ chapter }: ChapterProps) {
   const [isPresent, safeToRemove] = usePresence();
   const [loading, setLoading] = useState(false);
   const [canAnimate, setCanAnimate] = useState(false);
+
+  usePlaySound(chapter?.loop_sound || "", true);
 
   function onOptionSelect(id: number) {
     if (loading) return;
@@ -254,7 +257,9 @@ export default function Chapter({ chapter }: ChapterProps) {
       </header>
 
       <section className="flex w-[70%] left-0 right-0 mx-auto gap-12 absolute bg-black/75 justify-center bottom-12 pt-12 p-8 h-[12dvw]">
-        {chapter?.text && <ChapterText key={chapter?.id} text={chapter.text} />}
+        {chapter?.text && isPresent && (
+          <ChapterText key={chapter?.id} text={chapter.text} />
+        )}
         <div className="w-1/3">
           {!hasOptions && !loading && (
             <button

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import React from "react";
 import { useSoundContext } from "../context/SoundContext";
 
@@ -5,7 +6,7 @@ export default function SoundToggle() {
   const { soundOn, toggleSound } = useSoundContext();
 
   return (
-    <button className="p-2" onClick={toggleSound}>
+    <Button variant={"ghost"} size={"icon"} onClick={toggleSound}>
       {soundOn ? (
         <svg
           width="20"
@@ -37,6 +38,6 @@ export default function SoundToggle() {
           ></path>
         </svg>
       )}
-    </button>
+    </Button>
   );
 }

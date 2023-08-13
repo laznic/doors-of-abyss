@@ -12,6 +12,8 @@ export default function ChapterText({ text }: { text: string }) {
 
       if (isPresent) {
         const enterAnimation = async () => {
+          animate(scope.current, { opacity: 1 });
+
           for (const word of output.words) {
             animate(
               word,
@@ -67,7 +69,10 @@ export default function ChapterText({ text }: { text: string }) {
       <div className="-bottom-[1px] absolute block w-full h-full shadow-[-25px_-25px_60px_-15px_#000_inset] pointer-events-none z-10 " />
 
       <div className="h-full overflow-y-auto pb-8 pr-8">
-        <p className="text-[18px] md:text-2xl" ref={scope}>
+        <p
+          className="text-[18px] md:text-2xl [&>.word]:opacity-0 opacity-0"
+          ref={scope}
+        >
           {text}
         </p>
       </div>

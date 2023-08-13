@@ -29,6 +29,8 @@ export interface ChapterContextType {
     | null;
   goToNextChapter?: (id?: number, isOption?: boolean) => void;
   shouldKeepNotes: boolean;
+  inIntro: boolean;
+  passIntro: () => void;
 }
 
 export const ChapterContext = createContext<ChapterContextType>({
@@ -36,12 +38,15 @@ export const ChapterContext = createContext<ChapterContextType>({
   nextChapter: null,
   goToNextChapter: () => null,
   shouldKeepNotes: false,
+  inIntro: true,
+  passIntro: () => null,
 });
 
 const initialState = {
   currentChapter: { id: 1, notes: [] },
   nextChapter: null,
   shouldKeepNotes: false,
+  inIntro: true,
 };
 
 export function ChapterContextProvider(props: { children: ReactNode }) {
@@ -115,9 +120,20 @@ export function ChapterContextProvider(props: { children: ReactNode }) {
     setState({ currentChapter: nextChapter });
   }
 
+  function passIntro() {
+    if (!state.inIntro) return;
+
+    new Howl({
+      src: [`/sounds/exhale.mp3`],
+    }).play();
+
+    setState({ inIntro: false });
+  }
+
   const contextValue = {
     ...state,
     goToNextChapter,
+    passIntro,
   };
 
   return (
