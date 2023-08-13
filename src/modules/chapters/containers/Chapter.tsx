@@ -20,7 +20,7 @@ interface ChapterProps {
 }
 
 export default function Chapter({ chapter }: ChapterProps) {
-  const { goToNextChapter, inIntro } = useChapterContext();
+  const { goToNextChapter } = useChapterContext();
   const [action] = chapter?.actions || [];
   const options = chapter?.options || [];
   const notes = chapter?.notes || [];
@@ -88,7 +88,11 @@ export default function Chapter({ chapter }: ChapterProps) {
     switch (action?.action_type) {
       case "DRAW":
         return (
-          <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
             <Canvas ref={canvasRef} />
             <p
               className="text-muted -mb-20"
@@ -96,11 +100,14 @@ export default function Chapter({ chapter }: ChapterProps) {
             >
               Draw something on the paper
             </p>
-          </>
+          </motion.div>
         );
       case "SHOW_PICTURE":
         return (
-          <img
+          <motion.img
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="w-[50dvw] mx-auto h-auto -mt-[15dvw]"
             src={DOMPurify.sanitize(notes?.[0]?.image)}
             alt="Action image"
@@ -112,7 +119,11 @@ export default function Chapter({ chapter }: ChapterProps) {
         const [firstColumn, secondColumn] = chunk(notes, 12);
 
         return (
-          <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
             <div className="leading-[1.75dvw] absolute -top-[20dvw] left-[7dvw] w-[15dvw] h-[20dvw] -skew-x-[28deg] rotate-12 text-left overflow-hidden whitespace-normal">
               {firstColumn?.map((note) => (
                 <p
@@ -149,14 +160,15 @@ export default function Chapter({ chapter }: ChapterProps) {
                 </p>
               ))}
             </div>
-          </>
+          </motion.div>
         );
       case "NOTEBOOK_WRITE":
         return (
-          <div className="leading-8 absolute left-80 w-72 h-80 -skew-x-[28deg] -top-64 rotate-12 text-left overflow-hidden whitespace-normal">
+          <motion.div className="leading-8 absolute left-80 w-72 h-80 -skew-x-[28deg] -top-64 rotate-12 text-left overflow-hidden whitespace-normal">
             <textarea
               ref={textAreaRef}
               rows={10}
+              maxLength={30}
               style={{
                 fontFamily: getRandomFromArray([
                   "Caveat",
@@ -168,7 +180,7 @@ export default function Chapter({ chapter }: ChapterProps) {
               className="bg-transparent resize-none text-slate-900 placeholder-slate-800 outline-none"
               placeholder="Type something"
             />
-          </div>
+          </motion.div>
         );
       default:
         return null;
@@ -205,7 +217,7 @@ export default function Chapter({ chapter }: ChapterProps) {
 
   return (
     <section className="grid mx-auto h-full w-full">
-      <header className="relative w-full mt-12">
+      <header className="relative w-full mt-32 lg:mt-12">
         <div className="absolute w-1/2 top-[50%] -translate-y-1/2 left-0 right-0 mx-auto grid items-center text-center justify-center">
           {renderActions()}
         </div>
@@ -257,7 +269,7 @@ export default function Chapter({ chapter }: ChapterProps) {
         </svg>
       </header>
 
-      <section className="flex w-[70%] left-0 right-0 mx-auto gap-12 absolute bg-black/75 justify-center bottom-12 pt-12 p-8 h-[12dvw]">
+      <section className="flex w-[70%] left-0 right-0 mx-auto gap-12 absolute bg-black/75 justify-center bottom-12 pt-12 p-8 h-[12dvw] min-h-[320px]">
         {chapter?.text && <ChapterText key={chapter?.id} text={chapter.text} />}
         <div className="w-1/3">
           {!hasOptions && !loading && (

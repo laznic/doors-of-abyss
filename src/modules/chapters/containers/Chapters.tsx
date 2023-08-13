@@ -11,14 +11,17 @@ export default function Chapters() {
 
   return (
     <>
-      <div className="absolute left-4 top-4">
-        <Logotype className="w-48" />
-      </div>
       <div className="absolute right-4 top-4">
         <SoundToggle />
       </div>
 
       <AnimatePresence mode={"wait"}>
+        {!inIntro && (
+          <div className="absolute left-6 top-6">
+            <Logotype className="w-48" />
+          </div>
+        )}
+
         {inIntro ? (
           <Intro key={"intro"} />
         ) : (

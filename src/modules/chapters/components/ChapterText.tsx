@@ -22,7 +22,8 @@ export default function ChapterText({ text }: { text: string }) {
                 scale: [0, 1],
               },
               {
-                duration: 0.2,
+                ease: "easeInOut",
+                duration: 0.4,
                 delay: stagger(WORDS_PER_MINUTE / output.words.length / 75, {
                   from: getRandomInt(0, output.words.length - 1),
                 }),
@@ -43,6 +44,8 @@ export default function ChapterText({ text }: { text: string }) {
                 scale: [1, 1.5],
               },
               {
+                ease: "easeInOut",
+                duration: 0.4,
                 delay: stagger(staggerAmount, {
                   from: getRandomInt(0, output.words.length - 1),
                 }),
@@ -65,7 +68,7 @@ export default function ChapterText({ text }: { text: string }) {
   }, [isPresent]);
 
   return (
-    <div className="relative h-full overflow-hidden max-h-[8dvw] w-2/3 max-w-[800px]">
+    <div className="relative h-full overflow-hidden max-h-[16dvw] w-2/3 max-w-[800px]">
       <div className="-bottom-[1px] absolute block w-full h-full shadow-[-25px_-25px_60px_-15px_#000_inset] pointer-events-none z-10 " />
 
       <div className="h-full overflow-y-auto pb-8 pr-8">
