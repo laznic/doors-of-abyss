@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Database } from "@/database.types";
 import React, { useState } from "react";
 import useKeyPress from "../hooks/useKeyPress";
@@ -36,15 +37,15 @@ export default function ChapterOptions({
 
           return (
             <li key={option.id}>
-              <button
+              <Button
+                variant={"ghost"}
                 onClick={() => onOptionSelect(option.id)}
-                className={`flex text-left ${
+                className={`flex text-left pr-7 text-md ${
                   isActive ? "text-white" : "text-neutral-500"
                 }`}
               >
                 {isActive && (
                   <svg
-                    className="mt-1"
                     width="25"
                     height="25"
                     viewBox="0 0 15 15"
@@ -59,7 +60,7 @@ export default function ChapterOptions({
                 )}
 
                 {option.text}
-              </button>
+              </Button>
             </li>
           );
         })}

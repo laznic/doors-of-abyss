@@ -13,6 +13,7 @@ import supabase from "@/lib/supabase";
 import { chunk } from "remeda";
 import { getRandomFromArray } from "@/lib/utils";
 import { usePlaySound } from "@/modules/sounds/hooks/usePlaySound";
+import { Button } from "@/components/ui/button";
 
 interface ChapterProps {
   chapter: ChapterContextType["currentChapter"];
@@ -257,14 +258,13 @@ export default function Chapter({ chapter }: ChapterProps) {
       </header>
 
       <section className="flex w-[70%] left-0 right-0 mx-auto gap-12 absolute bg-black/75 justify-center bottom-12 pt-12 p-8 h-[12dvw]">
-        {chapter?.text && isPresent && (
-          <ChapterText key={chapter?.id} text={chapter.text} />
-        )}
+        {chapter?.text && <ChapterText key={chapter?.id} text={chapter.text} />}
         <div className="w-1/3">
           {!hasOptions && !loading && (
-            <button
+            <Button
+              variant={"ghost"}
               onClick={handleContinue}
-              className="inline-flex items-center gap-2"
+              className="inline-flex items-center gap-2 text-md pr-7"
             >
               <svg
                 width="25"
@@ -276,7 +276,7 @@ export default function Chapter({ chapter }: ChapterProps) {
                 <path d="M6 11L6 4L10.5 7.5L6 11Z" fill="currentColor"></path>
               </svg>
               Continue
-            </button>
+            </Button>
           )}
 
           {loading && (
