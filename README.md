@@ -61,3 +61,6 @@ We also wanted to make something that can be played over and over again, as the 
 - Niklas Lepistö ([GitHub](https://github.com/laznic), [Twitter](https://twitter.com/laznic))
 - Jani Reijonen ([Twitter](https://twitter.com/janireijonen))
 
+## Credits
+- Amazing music by [Giole Fazzer](https://pixabay.com/users/gioelefazzer)
+- Exhaling sound also from [Pixabay](https://pixabay.com)
