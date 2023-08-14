@@ -1,5 +1,5 @@
 
-![Doors of Abyss: The Endless Chase](https://github.com/laznic/doors-of-abyss/blob/main/public/share-img.png?raw=true)
+![Doors of Abyss: The Endless Chase](https://github.com/laznic/doors-of-abyss/blob/main/public/share-image.png)
 
 ## An interactive, narrative browser game
 
