@@ -8,8 +8,8 @@ export default forwardRef(function Canvas(props, canvasRef) {
   const setCanvasSize = useCallback(() => {
     const canvas = canvasRef.current;
 
-    canvas?.setAttribute("width", `${window.innerWidth / 3}px`);
-    canvas?.setAttribute("height", `${window.innerWidth / 6}px`);
+    canvas?.setAttribute("width", `${window.innerWidth / 2.5}px`);
+    canvas?.setAttribute("height", `${window.innerWidth / 5}px`);
   }, [canvasRef]);
 
   useEffect(() => {

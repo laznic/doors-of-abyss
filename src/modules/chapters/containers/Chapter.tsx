@@ -113,7 +113,7 @@ export default function Chapter({ chapter }: ChapterProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="w-[50dvw] mx-auto h-auto -mt-[15dvw]"
+            className="w-[50dvw] mx-auto h-auto"
             src={DOMPurify.sanitize(notes?.[0]?.image)}
             alt="Action image"
           />
@@ -128,8 +128,9 @@ export default function Chapter({ chapter }: ChapterProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            className="top-0 w-full h-full absolute"
           >
-            <div className="leading-[1.75dvw] absolute -top-[20dvw] left-[7dvw] w-[15dvw] h-[20dvw] -skew-x-[28deg] rotate-12 text-left overflow-hidden whitespace-normal">
+            <div className="leading-[1.75dvw] top-[5dvw] absolute left-[7dvw] w-[15dvw] h-[20dvw] -skew-x-[28deg] rotate-12 text-left overflow-hidden whitespace-normal">
               {firstColumn?.map((note) => (
                 <p
                   key={note.id}
@@ -147,7 +148,7 @@ export default function Chapter({ chapter }: ChapterProps) {
                 </p>
               ))}
             </div>
-            <div className="leading-[1.75dvw] absolute left-[30dvw] -top-[15dvw] w-[15dvw] h-[20dvw] -skew-x-[16deg] rotate-12 text-left overflow-hidden whitespace-normal">
+            <div className="leading-[1.75dvw] absolute left-[30dvw] top-[9dvw] w-[15dvw] h-[20dvw] -skew-x-[16deg] rotate-12 text-left overflow-hidden whitespace-normal">
               {secondColumn?.map((note) => (
                 <p
                   key={note.id}
@@ -223,7 +224,7 @@ export default function Chapter({ chapter }: ChapterProps) {
   return (
     <section className="grid mx-auto h-full w-full">
       <header className="relative w-full mt-32 lg:mt-12">
-        <div className="absolute w-1/2 top-[50%] -translate-y-1/2 left-0 right-0 mx-auto grid items-center text-center justify-center">
+        <div className="absolute w-1/2 h-[40dvw] min-h-[240px] top-0 left-0 right-0 mx-auto grid items-center text-center justify-center">
           {renderActions()}
         </div>
 
