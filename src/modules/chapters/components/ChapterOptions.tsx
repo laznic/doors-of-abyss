@@ -30,7 +30,7 @@ export default function ChapterOptions({
   });
 
   return (
-    <section className="px-8">
+    <section>
       <ul>
         {options.map((option, index) => {
           const isActive = activeOption === index;
