@@ -81,7 +81,7 @@ export default function ChapterText({ text }: { text: string }) {
               /\(chosen object\)/gi,
               localStorage.getItem("chosenObject") || "object",
             )
-            .split("===")
+            .split("\n")
             .map((paragraph, index) => (
               <span className="block mb-8 last-of-type:mb-0" key={index}>
                 {paragraph}
