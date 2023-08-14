@@ -18,6 +18,7 @@ https://doorsofabyss.com
 Built with
 - [Supabase](https://supabase.com)
 - [React](https://reactjs.org/)
+- [Frame Motion](https://www.framer.com/motion)
 - [Midjourney](https://www.midjourney.com/home)
 - [Stable Diffusion](https://stability.ai/stable-diffusion)
 - [shadcn/ui](https://ui.shadcn.com/)
