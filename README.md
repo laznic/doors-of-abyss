@@ -3,6 +3,8 @@
 
 ## An interactive, narrative browser game
 
+> Playing the role of Alex, you're tasked to find your relative Drew, who mysteriously disappeared after a change in their behavior. By dumb luck, you hit your head, causing to lose your memory. And now you have to start to unravel the mysteries you'll face.
+
 Doors of Abyss: The Endless Chase is an interactive browser game. It has an original story which went through the AI to improve the language used (because it was an amateur hour when we wrote it ourselves). Images have been generated via AI (Midjourney and Stable Diffusion)
 
 It takes about 15-30min to complete the game, and some of the actions you do in the game **will affect other players in the next playthrough.**
