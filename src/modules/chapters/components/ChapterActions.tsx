@@ -101,7 +101,7 @@ export default function ChapterActions({
         );
       case "NOTEBOOK_WRITE":
         return (
-          <motion.div className="leading-8 absolute left-80 w-72 h-80 -skew-x-[28deg] -top-64 rotate-12 text-left overflow-hidden whitespace-normal">
+          <motion.div className="leading-8 absolute left-[7dvw] w-72 h-80 -skew-x-[28deg] top-[6dvw] rotate-12 text-left overflow-hidden whitespace-normal">
             <textarea
               ref={textAreaRef}
               rows={10}
