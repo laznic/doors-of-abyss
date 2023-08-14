@@ -13,8 +13,6 @@ https://doorsofabyss.com
 >
 > This project is optimized for desktop devices
 
-<sup>Made for Supabase Launch Week 8 Hackathon.</sup> 
-
 Built with
 - [Supabase](https://supabase.com)
 - [React](https://reactjs.org/)
@@ -49,6 +47,7 @@ Both of us are big fans of games, especially story heavy ones (big fans of Baldu
 
 We also wanted to make something that can be played over and over again, as the story changes a bit based on what you choose. 
 
+
 ## Ideas for the future
 
 - Display average completion time based on actual data
@@ -64,3 +63,15 @@ We also wanted to make something that can be played over and over again, as the 
 ## Credits
 - Amazing music by [Giole Fazzer](https://pixabay.com/users/gioelefazzer)
 - Exhaling sound also from [Pixabay](https://pixabay.com)
+
+  <sup>Made for Supabase Launch Week 8 Hackathon.</sup> 
+
+<details>
+  <summary>
+    <sup><sup>
+    Spoiler warning
+    </sup></sup>
+  </summary>
+  
+ <sup><sup>Also, if you didn't notice while playing: the story is made to loop, resulting in the "The Endless Chase."</sup></sup>
+</details>
