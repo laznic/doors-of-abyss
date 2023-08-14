@@ -88,8 +88,12 @@ export default function Intro() {
                 <DialogDescription className="text-sm">
                   This is an interactive, narrative game which was built during
                   Supabase Launch Week 8 Hackathon. It's an original story, AI
-                  was only used to improve the language (due to being amateur
-                  writers).
+                  was used to improve the language (due to being amateur
+                  writers) and to generate images.
+                  <br />
+                  <br />
+                  It takes around 15-30 min to complete the game, depending how
+                  fast you read.
                   <br />
                   <br />
                   The game works with keyboard and mouse, and includes some
