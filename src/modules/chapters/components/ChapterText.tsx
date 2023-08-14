@@ -76,7 +76,17 @@ export default function ChapterText({ text }: { text: string }) {
           className="text-[18px] md:text-2xl [&>.word]:opacity-0 opacity-0"
           ref={scope}
         >
-          {text}
+          {text
+            .replace(
+              /\(chosen object\)/gi,
+              localStorage.getItem("chosenObject") || "object",
+            )
+            .split("===")
+            .map((paragraph, index) => (
+              <span className="block mb-8 last-of-type:mb-0" key={index}>
+                {paragraph}
+              </span>
+            ))}
         </p>
       </div>
     </div>

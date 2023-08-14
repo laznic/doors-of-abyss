@@ -37,6 +37,11 @@ export default function Chapter({ chapter }: ChapterProps) {
   function onOptionSelect(id: number) {
     if (loading) return;
 
+    localStorage.setItem(
+      "chosenObject",
+      options.find((o) => o.id === id)?.text?.toLowerCase(),
+    );
+
     setLoading(true);
     goToNextChapter?.(id, true);
   }
