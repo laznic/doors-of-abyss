@@ -63,7 +63,7 @@ We also wanted to make something that can be played over and over again, as the 
 - Jani Reijonen ([Twitter](https://twitter.com/janireijonen))
 
 ## Credits
-- Amazing music by [Giole Fazzer](https://pixabay.com/users/gioelefazzer)
+- Amazing music by [Giole Fazzer](https://pixabay.com/users/gioelefazzeri-16466931)
 - Exhaling sound also from [Pixabay](https://pixabay.com)
 
   <sup>Made for Supabase Launch Week 8 Hackathon.</sup> 
